@@ -1,0 +1,121 @@
+/* Media query for screens with a maximum width of 1400px */
+@media screen and (max-width: 1400px) {
+    .nav-links {
+      font-size: 1.2rem; /* Adjust the font size of navigation links */
+    }
+  
+    .logo {
+      font-size: 1.5rem; /* Adjust the font size of the logo */
+    }
+  
+    .experience-sub-title.project-title {
+      font-size: 1.5rem; /* Adjust the font size of project titles */
+    }
+  
+    .article-container {
+      width: 100%; /* Make project images occupy the full width of the container */
+    }
+}
+
+/* Media query for screens with a maximum width of 1200px */
+@media screen and (max-width: 1200px) {
+    .nav-links {
+      font-size: 1rem; /* Further reduce the font size of navigation links */
+    }
+  
+    .logo {
+      font-size: 1.2rem; /* Further reduce the font size of the logo */
+    }
+  
+    .experience-sub-title.project-title {
+      font-size: 1.2rem; /* Further reduce the font size of project titles */
+    }
+  
+    .article-container {
+      width: 100%; /* Make project images occupy the full width of the container */
+    }
+  
+    .article-container img {
+      max-width: 100%; /* Ensure project images scale down properly */
+    }
+}
+
+/* Media query for screens with a maximum width of 600px (Mobile) */
+@media screen and (max-width: 600px) {
+    .nav-links {
+      font-size: 0.9rem; /* Reduce the font size of navigation links for small screens */
+      flex-direction: column; /* Stack navigation links vertically */
+      text-align: center; 
+      gap: 1rem;
+    }
+  
+    .logo {
+      font-size: 1rem; /* Reduce the font size of the logo for small screens */
+    }
+  
+    .header {
+      font-size: 1.5rem; /* Adjust the font size of headers for small screens */
+      text-align: center; /* Center-align headers */
+    }
+  
+    .article-container {
+      width: 100%; /* Make project images occupy the full width of the container */
+    }
+  
+    .nav-projects h1 {
+      text-align: center; /* Center-align project titles */
+      margin-bottom: 1rem;
+    }
+  
+    .nav-projects #dev-nav {
+      justify-content: center; /* Center-align the project navigation links */
+      text-align: center; /* Center-align the project navigation links */
+      gap: 1rem; /* Adjust the gap between project navigation links */
+    }
+
+    .nav-projects {
+        text-align: center; /* Center-align the "Projects" header */
+    }
+
+    .dev-container {
+        text-align: center; /* Center-align the links container */
+    }
+
+    @media (max-width: 768px) {
+      .header-idea {
+          flex-direction: column; /* Stack header elements vertically for mobile */
+          text-align: center; /* Center-align header content */
+          padding: 2rem; /* Reduce padding for mobile */
+      }
+  
+      .header-left,
+      .header-right {
+          flex: none; /* Reset flex properties for mobile */
+          width: 100%; /* Set width to 100% for mobile */
+        
+      }
+
+      .header-left{
+              padding-right: 10px;
+      }
+
+      .header-right{
+              padding-left: 10px;
+      }
+  
+      .header-left h1,
+      .header-left p {
+          margin-bottom: 0.5rem; 
+          font-size: 1.2rem; /* Reduce spacing for mobile */
+          font-size: 1rem; 
+      }
+  
+      .header-right img {
+          max-width: 80%; /* Reduce image size for mobile */
+          margin-top: 1rem; /* Add margin to the top of the image */
+      }
+  
+      /* You can add more mobile-specific styles here as needed */
+  }
+    
+}
