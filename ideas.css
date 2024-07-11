@@ -24,10 +24,14 @@ p {
   line-height: 1.6;
 }
 
+#search-ideas{
+  text-align: center;
+}
+
 #featured-ideas,
 #search-ideas,
 #all-ideas {
-  margin: 4rem 10rem;
+  margin: 1rem 10rem;
 }
 
 .featured-idea {
@@ -93,12 +97,23 @@ p {
   margin-top: 1.5rem;
 }
 
-.tag {
+/* .tag {
   padding: 0.5rem 1rem;
   border-radius: 2rem;
   font-size: 0.9rem;
   font-weight: bold;
   color: white;
+} */
+
+.tag {
+  padding: 0.5rem 1rem;
+  border-radius: 7px;
+  border: solid 1px;
+  border-color: #000000;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #000000;
+  background-color: #FFf;
 }
 
 .notag{

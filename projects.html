@@ -1,329 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="projects.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="projectmediastyle.css" />
-    <link rel="stylesheet" href="mediastyle.css">
-    <title>Projects</title>
-</head>
-<body>
-  <nav id="desktop-nav">
-    <div class="logo">Om Bhojane</div>
-    <div>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="ideas.html">Ideas</a></li>
-        <li><a href="projects.html">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </div>
-  </nav>
-  <nav id="hamburger-nav">
-    <div class="logo">Om Bhojane</div>
-    <div class="hamburger-menu">
-      <div class="hamburger-icon" onclick="toggleMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <div class="menu-links">
-        <li><a href="#about" onclick="toggleMenu()">About</a></li>
-        <li><a href="ideas.html" onclick="toggleMenu()">Ideas</a></li>
-        <li><a href="projects.html" onclick="toggleMenu()">Projects</a></li>
-        <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
-      </div>
-    </div>
-  </nav>
-
-    
-
-    <nav class="nav-projects">
-    <h1 class="project-title header">Projects</h1>
-    <div class="dev-container" id="dev-nav">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Om Bhojane - Projects</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="projects.css" />
+    <link rel="stylesheet" href="mediastyle.css" />
+  </head>
+  <body>
+    <nav id="desktop-nav">
+      <div class="logo">Om Bhojane</div>
+      <div>
         <ul class="nav-links">
-            <li><a href="#aiprojects">AI</a></li>
-            <li><a href="#webprojects">Web Development</a></li>
-            <li><a href="#appprojects">APP Development</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="ideas.html">Ideas</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
         </ul>
-    </div>
+      </div>
+    </nav>
+    <nav id="hamburger-nav">
+      <div class="logo">Om Bhojane</div>
+      <div class="hamburger-menu">
+        <div class="hamburger-icon" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="menu-links">
+          <li><a href="index.html#about" onclick="toggleMenu()">About</a></li>
+          <li><a href="ideas.html" onclick="toggleMenu()">Ideas</a></li>
+          <li><a href="projects.html" onclick="toggleMenu()">Projects</a></li>
+          <li><a href="index.html#contact" onclick="toggleMenu()">Contact</a></li>
+        </div>
+      </div>
+    </nav>
 
-</nav> 
-    
-    <section id="aiprojects">
-
-        <h1 class="title">Innovations using AI.</h1>
-        <div class="experience-details-container">
-          <div class="about-containers">
-            <div class="details-container color-container">
-              <div class="article-container">
-                <img
-                  src="./assets/project-1.png"
-                  alt="Project 1"
-                  class="project-img"
-                />
-              </div>
-              <h2 class="experience-sub-title project-title">Project One</h2>
-              <div class="btn-container">
-                <button
-                  class="btn btn-color-2 project-btn"
-                  onclick="location.href='https://github.com/'"
-                >
-                  Github
-                </button>
-                <button
-                  class="btn btn-color-2 project-btn"
-                  onclick="location.href='https://github.com/'"
-                >
-                  Live Demo
-                </button>
-              </div>
-            </div>
-            <div class="details-container color-container">
-              <div class="article-container">
-                <img
-                  src="./assets/project-2.png"
-                  alt="Project 2"
-                  class="project-img"
-                />
-              </div>
-              <h2 class="experience-sub-title project-title">Project Two</h2>
-              <div class="btn-container">
-                <button
-                  class="btn btn-color-2 project-btn"
-                  onclick="location.href='https://github.com/'"
-                >
-                  Github
-                </button>
-                <button
-                  class="btn btn-color-2 project-btn"
-                  onclick="location.href='https://github.com/'"
-                >
-                  Live Demo
-                </button>
-              </div>
-            </div>
-            <div class="details-container color-container">
-              <div class="article-container">
-                <img
-                  src="./assets/project-3.png"
-                  alt="Project 3"
-                  class="project-img"
-                />
-              </div>
-              
-              <h2 class="experience-sub-title project-title">Project Three</h2>
-              <div class="btn-container">
-                <button
-                  class="btn btn-color-2 project-btn"
-                  onclick="location.href='https://github.com/'"
-                >
-                  Github
-                </button>
-                <button
-                  class="btn btn-color-2 project-btn"
-                  onclick="location.href='https://github.com/'"
-                >
-                  Live Demo
-                </button>
-              </div>
-            </div>
+    <section id="spotlight-project">
+      <h1 class="title">Spotlight Project</h1>
+      <div class="spotlight-container">
+        <div class="spotlight-image">
+          <img src="./assets/spotlight-project.jpg" alt="Spotlight Project" />
+        </div>
+        <div class="spotlight-content">
+          <h2>AI-Powered Health Assistant</h2>
+          <p style="padding-bottom: 25px;">An innovative health assistant that uses AI to provide personalized health recommendations and track user wellness goals.</p>
+          <a href="#" class="btn btn-color-2">Visit Website</a>
+          <div class="tags" style="padding-top: 6px;">
+            <span class="tag" data-category="AI">AI</span>
+            <span class="tag" data-category="App">App</span>
           </div>
         </div>
-        <!-- <div class="show-more">Show More</div> -->
-        <img
-          src="./assets/arrow.png"
-          alt="Arrow icon"
-          class="icon arrow"
-          onclick="location.href='./#contact'"
-        />
-      </section>
+      </div>
+    </section>
 
-      <section id="webprojects">
-
-        <h1 class="title">Web Development Projects</h1>
-        <div class="experience-details-container">
-          <div class="about-containers">
-            <div class="details-container color-container">
-              <div class="article-container">
-                <img
-                  src="./assets/project-1.png"
-                  alt="Project 1"
-                  class="project-img"
-                />
-              </div>
-              <h2 class="experience-sub-title project-title">Project One</h2>
-              <div class="btn-container">
-                <button
-                  class="btn btn-color-2 project-btn"
-                  onclick="location.href='https://github.com/'"
-                >
-                  Github
-                </button>
-                <button
-                  class="btn btn-color-2 project-btn"
-                  onclick="location.href='https://github.com/'"
-                >
-                  Live Demo
-                </button>
-              </div>
-            </div>
-            <div class="details-container color-container">
-              <div class="article-container">
-                <img
-                  src="./assets/project-2.png"
-                  alt="Project 2"
-                  class="project-img"
-                />
-              </div>
-              <h2 class="experience-sub-title project-title">Project Two</h2>
-              <div class="btn-container">
-                <button
-                  class="btn btn-color-2 project-btn"
-                  onclick="location.href='https://github.com/'"
-                >
-                  Github
-                </button>
-                <button
-                  class="btn btn-color-2 project-btn"
-                  onclick="location.href='https://github.com/'"
-                >
-                  Live Demo
-                </button>
-              </div>
-            </div>
-            <div class="details-container color-container">
-              <div class="article-container">
-                <img
-                  src="./assets/project-3.png"
-                  alt="Project 3"
-                  class="project-img"
-                />
-              </div>
-              <h2 class="experience-sub-title project-title">Project Three</h2>
-              <div class="btn-container">
-                <button
-                  class="btn btn-color-2 project-btn"
-                  onclick="location.href='https://github.com/'"
-                >
-                  Github
-                </button>
-                <button
-                  class="btn btn-color-2 project-btn"
-                  onclick="location.href='https://github.com/'"
-                >
-                  Live Demo
-                </button>
-              </div>
-            </div>
+    <section id="hackathon-projects">
+      <h2 id="hackathon-projects-head">Hackathon Winning Projects</h2>
+      <div class="hackathon-container">
+        <div class="hackathon-project">
+          <h3>Eco-Friendly Smart Home System</h3>
+          <p>A blockchain-based smart home system that optimizes energy usage and reduces carbon footprint.</p>
+          <a href="#" class="btn btn-color-2">View Project</a>
+          <div class="tags">
+            <span class="tag" data-category="Web3">Web3</span>
+            <span class="tag" data-category="IoT">IoT</span>
           </div>
         </div>
-        <!-- <div class="show-more">Show More</div> -->
-        <img
-          src="./assets/arrow.png"
-          alt="Arrow icon"
-          class="icon arrow"
-          onclick="location.href='./#contact'"
-        />
-      </section>
-
-      <section id="appprojects">
-
-        <h1 class="title">APP Development Projects</h1>
-        <div class="experience-details-container">
-          <div class="about-containers">
-            <div class="details-container color-container">
-              <div class="article-container">
-                <img
-                  src="./assets/project-1.png"
-                  alt="Project 1"
-                  class="project-img"
-                />
-              </div>
-              <h2 class="experience-sub-title project-title">Project One</h2>
-              <div class="btn-container">
-                <button
-                  class="btn btn-color-2 project-btn"
-                  onclick="location.href='https://github.com/'"
-                >
-                  Github
-                </button>
-                <button
-                  class="btn btn-color-2 project-btn"
-                  onclick="location.href='https://github.com/'"
-                >
-                  Live Demo
-                </button>
-              </div>
-            </div>
-            <div class="details-container color-container">
-              <div class="article-container">
-                <img
-                  src="./assets/project-2.png"
-                  alt="Project 2"
-                  class="project-img"
-                />
-              </div>
-              <h2 class="experience-sub-title project-title">Project Two</h2>
-              <div class="btn-container">
-                <button
-                  class="btn btn-color-2 project-btn"
-                  onclick="location.href='https://github.com/'"
-                >
-                  Github
-                </button>
-                <button
-                  class="btn btn-color-2 project-btn"
-                  onclick="location.href='https://github.com/'"
-                >
-                  Live Demo
-                </button>
-              </div>
-            </div>
-            <div class="details-container color-container">
-              <div class="article-container">
-                <img
-                  src="./assets/project-3.png"
-                  alt="Project 3"
-                  class="project-img"
-                />
-              </div>
-              <h2 class="experience-sub-title project-title">Project Three</h2>
-              <div class="btn-container">
-                <button
-                  class="btn btn-color-2 project-btn"
-                  onclick="location.href='https://github.com/'"
-                >
-                  Github
-                </button>
-                <button
-                  class="btn btn-color-2 project-btn"
-                  onclick="location.href='https://github.com/'"
-                >
-                  Live Demo
-                </button>
-              </div>
-            </div>
+        <div class="hackathon-project">
+          <h3>AR Language Learning App</h3>
+          <p>An augmented reality app that makes language learning interactive and immersive.</p>
+          <a href="#" class="btn btn-color-2">View Project</a>
+          <div class="tags">
+            <span class="tag" data-category="App">App</span>
+            <span class="tag" data-category="AR">AR</span>
           </div>
         </div>
-        <!-- <div class="show-more">Show More</div> -->
-        <img
-          src="./assets/arrow.png"
-          alt="Arrow icon"
-          class="icon arrow"
-          onclick="location.href='./projects.html'"
-        />
-      </section>
+      </div>
+    </section>
 
-      <!-- Contact -->
-      <script>
-        // JavaScript function to toggle the mobile menu
-        function toggleMobileMenu() {
-            var mobileMenu = document.querySelector('.mobile-menu');
-            mobileMenu.classList.toggle('open');
-        }
-    </script>
-</body>
+    <section id="search-projects">
+      <h2>Search Projects</h2>
+      <div class="search-container">
+        <button class="search-btn active" data-category="All">All</button>
+        <button class="search-btn" data-category="AI">AI</button>
+        <button class="search-btn" data-category="Web">Web</button>
+        <button class="search-btn" data-category="App">App</button>
+        <button class="search-btn" data-category="Web3">Web3/Blockchain</button>
+      </div>
+    </section>
+
+    <section id="all-projects">
+      <h2>All Projects</h2>
+      <div class="projects-grid">
+        <div class="project-card" data-category="AI">
+          <h3>Sentiment Analysis Tool</h3>
+          <p style="padding-bottom: 25px;">A tool that analyzes text data to determine the emotional tone behind words.</p>
+          <a href="#" class="btn btn-color-2">GitHub Repo</a>
+          <div class="tags">
+            <span class="tag" data-category="AI">AI</span>
+            <span class="tag" data-category="NLP">NLP</span>
+          </div>
+        </div>
+        <div class="project-card" data-category="Web">
+          <h3>Interactive Data Visualization Platform</h3>
+          <p>A web-based platform for creating interactive and engaging data visualizations.</p>
+          <a href="#" class="btn btn-color-2">GitHub Repo</a>
+          <div class="tags">
+            <span class="tag" data-category="Web">Web</span>
+            <span class="tag" data-category="D3">D3.js</span>
+          </div>
+        </div>
+        <div class="project-card" data-category="App">
+          <h3>Augmented Reality Shopping App</h3>
+          <p>An app that allows users to visualize products in their own space before purchasing.</p>
+          <a href="#" class="btn btn-color-2">GitHub Repo</a>
+          <div class="tags">
+            <span class="tag" data-category="App">App</span>
+            <span class="tag" data-category="AR">AR</span>
+          </div>
+        </div>
+        <div class="project-card" data-category="Web3">
+          <h3>Decentralized Social Media Platform</h3>
+          <p>A blockchain-based social media platform focused on user privacy and data ownership.</p>
+          <a href="#" class="btn btn-color-2">GitHub Repo</a>
+          <div class="tags">
+            <span class="tag" data-category="Web3">Web3</span>
+            <span class="tag" data-category="Blockchain">Blockchain</span>
+          </div>
+        </div>
+        <div class="project-card" data-category="AI">
+          <h3>AI-Driven Content Generator</h3>
+          <p>An AI system that generates high-quality, original content based on user prompts.</p>
+          <a href="#" class="btn btn-color-2">GitHub Repo</a>
+          <div class="tags">
+            <span class="tag" data-category="AI">AI</span>
+            <span class="tag" data-category="NLP">NLP</span>
+          </div>
+        </div>
+        <div class="project-card" data-category="Web">
+          <h3>Collaborative Code Editor</h3>
+          <p>A real-time collaborative coding platform for remote teams.</p>
+          <a href="#" class="btn btn-color-2">GitHub Repo</a>
+          <div class="tags">
+            <span class="tag" data-category="Web">Web</span>
+            <span class="tag" data-category="WebSockets">WebSockets</span>
+          </div>
+        </div>
+        <div class="project-card" data-category="App">
+          <h3>Personalized Fitness Tracker</h3>
+          <p>A smart fitness app that creates custom workout plans based on user goals and progress.</p>
+          <a href="#" class="btn btn-color-2">GitHub Repo</a>
+          <div class="tags">
+            <span class="tag" data-category="App">App</span>
+            <span class="tag" data-category="ML">Machine Learning</span>
+          </div>
+        </div>
+        <div class="project-card" data-category="Web3">
+          <h3>Decentralized File Storage System</h3>
+          <p>A secure, decentralized file storage solution using blockchain technology.</p>
+          <a href="#" class="btn btn-color-2">GitHub Repo</a>
+          <div class="tags">
+            <span class="tag" data-category="Web3">Web3</span>
+            <span class="tag" data-category="IPFS">IPFS</span>
+          </div>
+        </div>
+        <div class="project-card" data-category="AI">
+          <h3>Autonomous Drone Navigation System</h3>
+          <p>An AI-powered system for autonomous drone navigation in complex environments.</p>
+          <a href="#" class="btn btn-color-2">GitHub Repo</a>
+          <div class="tags">
+            <span class="tag" data-category="AI">AI</span>
+            <span class="tag" data-category="CV">Computer Vision</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Copyright &#169; 2023 Om Bhojane.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="projects.js"></script>
+  </body>
 </html>
