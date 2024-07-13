@@ -28,6 +28,11 @@
     height: 100%;
     border: none;
   }
+
+  .ul{
+    text-align: left;
+    font-size: 1rem;
+  }
   
   /* Responsive adjustments */
   @media (max-width: 1250px) {
@@ -47,5 +52,8 @@
   @media (max-width: 600px) {
     .iframe-container {
       height: 400px;
+    }
+    .ul{
+      padding-left: 15px;
     }
   }
