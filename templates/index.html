@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Om Bhojane</title>
+    <link rel="stylesheet" href="/static/css/style.css"/>
+    <link rel="stylesheet" href="/static/css/mediastyle.css" />
+  </head>
+  <body>
+    <nav id="desktop-nav">
+      <div class="logo">Om Bhojane</div>
+      <div>
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="/ideas">Ideas</a></li>
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/timeline">Timeline</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+    <nav id="hamburger-nav">
+      <div class="logo">Om Bhojane</div>
+      <div class="hamburger-menu">
+        <div class="hamburger-icon" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="menu-links">
+          <li><a href="#about" onclick="toggleMenu()">About</a></li>
+          <li><a href="/ideas">Ideas</a></li>
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/timeline">Timeline</a></li>
+          <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
+        </div>
+      </div>
+    </nav>
+    <section id="profile">
+      <div class="section__pic-container">
+        <img src="/static/assets/omprofile.png" alt="om" />
+      </div>
+      <div class="section__text">
+        <p class="section__text__p1">Hello, I'm</p>
+        <h1 class="title">Om Bhojane</h1>
+        <p class="section__text__p2">AI Developer</p>
+        <div class="btn-container">
+          <button
+            class="btn btn-color-2"
+            onclick="window.open('/static/assets/resume.pdf')"
+          >
+            Resume
+          </button>
+          <button class="btn btn-color-1" onclick="location.href='./#contact'">
+            Contact Info
+          </button>
+        </div>
+        <div id="socials-container">
+          <img
+            src="/static/assets/linkedin.png"
+            alt="My LinkedIn profile"
+            class="icon"
+            onclick="location.href='https://www.linkedin.com/in/om-bhojane/'"
+            target="_blank"
+          />
+          <img
+            src="/static/assets/github.png"
+            alt="My Github profile"
+            class="icon"
+            onclick="location.href='https://github.com/ombhojane'"
+            target="_blank"
+          />
+          <img
+          src="/static/assets/twitter-logo-png-round-6.png"
+          alt="twitter"
+          class="icon"
+          onclick="location.href='https://x.com/ombhojane05'"
+          target="_blank"
+      />
+        </div>
+    </section>
+    <section id="about">
+      <p class="section__text__p1">Get To Know More</p>
+      <h1 class="title">About Me</h1>
+      <div class="section-container">
+        <div class="section__pic-container">
+          <img
+            src="/static/assets/omabout.jpg"
+            alt="Profile picture"
+            class="about-pic"
+          />
+        </div>
+        <div class="about-details-container">
+          <div class="about-containers">
+            <div class="details-container">
+              <img
+                src="/static/assets/experience.png"
+                alt="Experience icon"
+                class="icon"
+              />
+              <h3>Experience</h3>
+              <p>2+ years <br />AI & Web/APP Development </p>
+            </div>
+            <div class="details-container">
+              <img
+                src="/static/assets/education.png"
+                alt="Education icon"
+                class="icon"
+              />
+              <h3>Education</h3>
+              <p>B.E. Computer Engineering<br />Open Source Contribtor</p>
+            </div>
+          </div>
+          <div class="text-container">
+            <p>
+              I am a committed Computer Engineering student with a profound interest in artificial intelligence and full-stack development. My academic and internship experiences have equipped me with robust skills in AI research, machine learning, and web technologies. Passionate about employing technology to address complex challenges, I aim to contribute effectively in innovative and technology-driven environments.
+            </p>
+            
+          </div>
+        </div>
+      </div>
+      
+    </section>
+    <section id="experience">
+      <p class="section__text__p1">Explore Our</p>
+      <h1 class="title">Experience</h1>
+      <div class="experience-details-container">
+        <div class="about-containers">
+          <div class="details-container">
+            <h2 class="experience-sub-title">  Tech Stack</h2>
+            <div class="article-container">
+              <article>
+                <img
+                  src="/static/assets/checkmark.png"
+                  alt="Experience icon"
+                  class="icon"
+                />
+                <div>
+                  <h3>React/NextJs</h3>
+                  <p>Skilled</p>
+                </div>
+              </article>
+              <article>
+                <img
+                  src="/static/assets/checkmark.png"
+                  alt="Experience icon"
+                  class="icon"
+                />
+                <div>
+                  <h3>JavaScript</h3>
+                  <p>Intermediate</p>
+                </div>
+              </article>
+              <article>
+                <img
+                  src="/static/assets/checkmark.png"
+                  alt="Experience icon"
+                  class="icon"
+                />
+                <div>
+                  <h3>Vertex AI</h3>
+                  <p>Intermediate</p>
+                </div>
+              </article>
+              <article>
+                <img
+                  src="/static/assets/checkmark.png"
+                  alt="Experience icon"
+                  class="icon"
+                />
+                <div>
+                  <h3>TypeScript  </h3>
+                  <p>Experienced</p>
+                </div>
+              </article>
+              <article>
+                <img
+                  src="/static/assets/checkmark.png"
+                  alt="Experience icon"
+                  class="icon"
+                />
+                <div>
+                  <h3>Flutter</h3>
+                  <p>Experienced</p>
+                </div>
+              </article>
+              <article>
+                <img
+                  src="/static/assets/checkmark.png"
+                  alt="Experience icon"
+                  class="icon"
+                />
+                <div>
+                  <h3>Python & lib</h3>
+                  <p>Skilled</p>
+                </div>
+              </article>
+            </div>
+          </div>
+          <div class="details-container">
+            <h2 class="experience-sub-title">AI technologies</h2>
+            <div class="article-container">
+              <article>
+                <img src="/static/assets/checkmark.png" alt="Experience icon" class="icon" />
+                <div>
+                  <h3>Frameworks</h3>
+                  <p>Proficient</p>
+                </div>
+              </article>
+              <article>
+                <img src="/static/assets/checkmark.png" alt="Experience icon" class="icon" />
+                <div>
+                  <h3>Transformers</h3>
+                  <p>Advanced</p>
+                </div>
+              </article>
+              <article>
+                <img src="/static/assets/checkmark.png" alt="Experience icon" class="icon" />
+                <div>
+                  <h3>Modalities</h3>
+                  <p>Advanced</p>
+                </div>
+              </article>
+              <article>
+                <img src="/static/assets/checkmark.png" alt="Experience icon" class="icon" />
+                <div>
+                  <h3>Algorithms</h3>
+                  <p>Experienced</p>
+                </div>
+              </article>
+              <article>
+                <img src="/static/assets/checkmark.png" alt="Experience icon" class="icon" />
+                <div>
+                  <h3>AI Research</h3>
+                  <p>Skilled</p>
+                </div>
+              </article>
+              <article>
+                <img src="/static/assets/checkmark.png" alt="Experience icon" class="icon" />
+                <div>
+                  <h3>Optimization</h3>
+                  <p>Skilled</p>
+                </div>
+              </article>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <p class="section__text__p1">Get in Touch</p>
+      <h1 class="title">Contact Me!</h1>
+      <div class="contact-info-upper-container">
+        <div class="contact-info-container">
+          <img
+            src="/static/assets/email.png"
+            alt="Email icon"
+            class="icon contact-icon email-icon"
+          />
+          <p><a href="mailto:examplemail@gmail.com">ombhojane05@gmail.com</a></p>
+        </div>
+        <div class="contact-info-container">
+          <img
+            src="/static/assets/linkedin.png"
+            alt="LinkedIn icon"
+            class="icon contact-icon"
+          />
+          <p><a href="https://www.linkedin.com/in/om-bhojane/">LinkedIn</a></p>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <p>Copyright &#169; 2024 Om Bhojane.</p>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>

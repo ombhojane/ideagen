@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Om Bhojane - Projects</title>
+    <link rel="stylesheet" href="/static/css/style.css"/>
+    <link rel="stylesheet" href="/static/css/mediastyle.css" />
+    <link rel="stylesheet" href="/static/css/projects.css" />
+  </head>
+  <body>
+    <nav id="desktop-nav">
+      <div class="logo">Om Bhojane</div>
+      <div>
+        <ul class="nav-links">
+          <li><a href="/#about">About</a></li>
+          <li><a href="/ideas">Ideas</a></li>
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/timeline">Timeline</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+    <nav id="hamburger-nav">
+      <div class="logo">Om Bhojane</div>
+      <div class="hamburger-menu">
+        <div class="hamburger-icon" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="menu-links">
+          <li><a href="/#about" onclick="toggleMenu()">About</a></li>
+          <li><a href="/ideas">Ideas</a></li>
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/timeline">Timeline</a></li>
+          <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
+        </div>
+      </div>
+    </nav>
+
+    <section id="spotlight-project">
+      <h1 class="title">Spotlight Project</h1>
+      <div class="spotlight-container">
+        <div class="spotlight-image">
+          <img src="/static/assets/chalokisaan.png" alt="Spotlight Project" />
+        </div>
+        <div class="spotlight-content">
+          <h2>Chalo Kisaan</h2>
+          <p style="padding-bottom: 30px;">Chalo Kisaan is an agrotourism service predictor that helps farmers generate potential business models based on their land size, budget, and other factors. It provides interactive visualizations to preview how the proposed service could be implemented on their farm, along with a detailed description, business model, budget, and setup process.   </p>
+          <a href="https://www.chalokisaan.app/" class="btn btn-color-2" target="_blank">Visit Website</a>
+          <div class="tags" style="padding-top: 6px;">
+            <span class="tag" data-category="AI">AI</span>
+            <span class="tag" data-category="App">Agrotourism</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="hackathon-projects">
+      <h2 id="hackathon-projects-head">Hackathon Winning Projects</h2>
+      <div class="hackathon-container">
+        <div class="hackathon-project">
+          <h3>Urban Space</h3>
+          <p style="padding-bottom: 30px;">Urban Space identifies vacant urban areas and generates plans to transform them into vibrant green spaces, promoting sustainable and healthier urban environments by bringing nature closer to where people live.</p>
+          <a href="https://urbanspace.vercel.app/" class="btn btn-color-2" target="_blank">View Project</a>
+          <div class="tags" style="padding-top: 6px;">
+            <span class="tag" data-category="AI">AI</span>
+            <span class="tag" data-category="App">Social Good</span>
+          </div>
+        </div>
+        <div class="hackathon-project">
+          <h3>Code Craft</h3>
+          <p style="padding-bottom: 30px;">An AI assistant designed to provide intuitive, step-by-step guidance to developers for breaking down coding projects and accelerating development workflows.            .</p>
+          <a href="https://quantifiai.vercel.app/" class="btn btn-color-2" target="_blank">View Project</a>
+          <div class="tags" style="padding-top: 6px;">
+            <span class="tag" data-category="AI">AI</span>
+            <span class="tag" data-category="Web">Web</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- <section id="search-projects">
+      <h2>Search Projects</h2>
+      <div class="search-container">
+        <button class="search-btn active" data-category="All">All</button>
+        <button class="search-btn" data-category="AI">AI</button>
+        <button class="search-btn" data-category="Web">Web</button>
+        <button class="search-btn" data-category="App">App</button>
+        <button class="search-btn" data-category="Web3">Web3/Blockchain</button>
+      </div>
+    </section> -->
+
+    <section id="all-projects">
+      <h2>Open-sourced Projects</h2>
+      <div class="projects-grid">
+        <div class="project-card" data-category="AI">
+          <h3>Nexus AI</h3>
+          <p style="padding-bottom: 25px;">DBRX Nexus AI is a conversational AI application is designed to interact with users via natural language, generate SQL queries based on user queries, execute them against a database, and format the responses in a conversational manner.</p>
+          <a href="https://github.com/ombhojane/dbrx-nexus" class="btn btn-color-2">GitHub Repo</a>
+          <div class="tags" style="padding-top: 6px;">
+            <span class="tag" data-category="AI">AI</span>
+            <span class="notag">NLP</span>
+            <span class="notag" >SQL</span>
+          </div>
+        </div>
+        <div class="project-card" data-category="AI">
+          <h3>Truecaptions</h3>
+          <p style="padding-bottom: 30px;">Truecaptions browser extension helps users track AI-generated and fake content on web pages. This open-source project allows contributors to detect AI generated content and validate them via a browser extension.</p>
+          <a href="https://github.com/truecaptions/browser-extension" class="btn btn-color-2" target="_blank">GitHub Repo</a>
+          <div class="tags" style="padding-top: 6px;">
+            <span class="tag" data-category="AI">AI</span>
+            <span class="notag" data-category="D3">Web Extension</span>
+          </div>
+        </div>
+        <div class="project-card" data-category="web">
+          <h3>Wellness.ai</h3>
+          <p style="padding-bottom: 30px;">Wellness.ai is a compassionate friend for anyone facing mental health challenges, our chatbot is here to lend an empathetic ear. We're here to listen to your concerns and help you determine whether seeking the support of a therapist could be beneficial for you.          </p>
+          <a href="https://github.com/ombhojane/wellness.ai" class="btn btn-color-2">GitHub Repo</a>
+          <div class="tags" style="padding-top: 6px;">
+            <span class="tag" data-category="AI">AI</span>
+            <span class="tag" data-category="Web">Web</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="idea-generator-card">
+      <div class="card-container">
+        <div class="card-image">
+          <img src="https://tse1.mm.bing.net/th?id=OIP.DpjifWa_mAcy6jT5PgJcvwHaFY&pid=Api" alt="Idea Generator Illustration" >
+        </div>
+        <div class="card-content">
+          <h2>Can't find the right ideas for your projects?</h2>
+          <p>Try our AI-powered Idea Generator! It combines your interests with trending technologies to create unique project concepts.</p>
+          <ul>
+            <li>Personalized idea suggestions</li>
+            <li>Trending technology integration</li>
+            <li>Difficulty level customization</li>
+            <li>Domain-specific idea generation</li>
+          </ul>
+          <div  style="padding-top: 15px;">
+            <a href="/ideagen" class="btn btn-color-1" style="text-decoration: none;">Try Idea Generator</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <p class="section__text__p1">Get in Touch</p>
+      <h1 class="title">Contact Me!</h1>
+      <div class="contact-info-upper-container">
+        <div class="contact-info-container">
+          <img
+            src="/static/assets/email.png"
+            alt="Email icon"
+            class="icon contact-icon email-icon"
+          />
+          <p><a href="mailto:examplemail@gmail.com">ombhojane05@gmail.com</a></p>
+        </div>
+        <div class="contact-info-container">
+          <img
+            src="/static/assets/linkedin.png"
+            alt="LinkedIn icon"
+            class="icon contact-icon"
+          />
+          <p><a href="https://www.linkedin.com/in/om-bhojane/">LinkedIn</a></p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Copyright &#169; 2024 Om Bhojane.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="projects.js"></script>
+  </body>
+</html>
