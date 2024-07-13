@@ -1,0 +1,51 @@
+/* Ideas Page Specific Styles */
+#idea-generation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 4vh;
+    min-height: 80vh;
+  }
+
+  p{
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  
+  .iframe-container {
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 1200px; /* Increased from 850px */
+    height: 700px; /* Increased from 450px */
+    overflow: hidden;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .iframe-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 1250px) {
+    .iframe-container {
+      width: 95%;
+      height: 600px;
+    }
+  }
+  
+  @media (max-width: 900px) {
+    .iframe-container {
+      width: 90%;
+      height: 600px;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .iframe-container {
+      height: 400px;
+    }
+  }

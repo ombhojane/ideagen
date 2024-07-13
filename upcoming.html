@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upcoming Features - Om Bhojane</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="upcoming.css" />
+  </head>
+  <body>
+    <nav id="desktop-nav">
+      <div class="logo">Om Bhojane</div>
+      <div>
+        <ul class="nav-links">
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="ideas.html">Ideas</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="upcoming.html">Upcoming</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+    <nav id="hamburger-nav">
+      <div class="logo">Om Bhojane</div>
+      <div class="hamburger-menu">
+        <div class="hamburger-icon" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="menu-links">
+          <li><a href="index.html#about" onclick="toggleMenu()">About</a></li>
+          <li><a href="ideas.html" onclick="toggleMenu()">Ideas</a></li>
+          <li><a href="projects.html" onclick="toggleMenu()">Projects</a></li>
+          <li><a href="upcoming.html" onclick="toggleMenu()">Upcoming</a></li>
+          <li><a href="index.html#contact" onclick="toggleMenu()">Contact</a></li>
+        </div>
+      </div>
+    </nav>
+    <section id="upcoming-features">
+      <h1 class="title">Upcoming Features</h1>
+      <div class="feature-container">
+        <h2>IdeaGen: Turn Thoughts into Ideas</h2>
+        <img src="./assets/ideagen-preview.png" alt="IdeaGen Preview" class="feature-image">
+        <p>IdeaGen is an innovative tool designed to help you transform your thoughts into concrete project ideas. Whether you're a student, developer, or entrepreneur, IdeaGen assists you in generating unique and tailored project concepts.</p>
+        <h3>What IdeaGen Does:</h3>
+        <ul>
+          <li>Generates project ideas based on your specifications</li>
+          <li>Considers factors like category, proficiency level, and time frame</li>
+          <li>Provides detailed descriptions, key features, and potential impacts</li>
+          <li>Helps overcome creative blocks and sparks innovation</li>
+        </ul>
+        <a href="https://ombhojane-ideagen.hf.space" class="btn btn-color-2" target="_blank">Open IdeaGen</a>
+      </div>
+    </section>
+    <footer>
+      <p>Copyright &#169; 2023 Om Bhojane.</p>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>

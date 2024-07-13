@@ -14,9 +14,10 @@
       <div class="logo">Om Bhojane</div>
       <div>
         <ul class="nav-links">
-          <li><a href="/">About</a></li>
+          <li><a href="#about">About</a></li>
           <li><a href="ideas.html">Ideas</a></li>
           <li><a href="projects.html">Projects</a></li>
+          <li><a href="timeline.html">Timeline</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </div>
@@ -30,9 +31,10 @@
           <span></span>
         </div>
         <div class="menu-links">
-          <li><a href="/" onclick="toggleMenu()">About</a></li>
+          <li><a href="#about" onclick="toggleMenu()">About</a></li>
           <li><a href="ideas.html" onclick="toggleMenu()">Ideas</a></li>
           <li><a href="projects.html" onclick="toggleMenu()">Projects</a></li>
+          <li><a href="timeline.html" onclick="toggleMenu()">Timeline</a></li>
           <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
         </div>
       </div>
@@ -44,12 +46,14 @@
           <h2>AI-Powered Personal Assistant</h2>
           <p>A smart personal assistant that learns from user behavior and adapts to individual needs.</p>
           <div class="tags">
-            <span class="tag" >AI</span>
-            <span class="tag" >Machine Learning</span>
-            <span class="tag">Natural Language Processing</span>
+            <span class="tag" data-category="AI">AI</span>
+            <span class="tag" data-category="AI">Machine Learning</span>
+            <span class="notag" data-category="AI">Natural Language Processing</span>
           </div>
         </div>
       </section>
+
+      
 
     <section id="search-ideas">
       <h2>Search Ideas</h2>
@@ -86,7 +90,7 @@
           <p>An app that allows users to visualize products in their own space before purchasing.</p>
           <div class="tags">
             <span class="tag" data-category="App">App</span>
-            <span class="tag" data-category="App">Flutter</span>
+            <span class="notag" data-category="App">Flutter</span>
           </div>
         </div>
         <div class="idea-card" data-category="Web3">
@@ -104,14 +108,14 @@
           <div class="tags">
             <span class="tag" data-category="AI">AI</span>
             <span class="tag" data-category="AI">NLP</span>
-            <span class="notag">GPT-3</span>
+            <span class="notag">LLMs</span>
           </div>
         </div>
         <div class="idea-card" data-category="Web">
           <h3>Collaborative Code Editor</h3>
           <p>A real-time collaborative coding platform for remote teams.</p>
           <div class="tags">
-            <span class="tag" data-category="Web3">Web</span>
+            <span class="tag" data-category="Web">Web</span>
             <span class="notag">WebSockets</span>
             <span class="notag">Node.js</span>
           </div>
@@ -120,8 +124,8 @@
           <h3>Personalized Fitness Tracker</h3>
           <p>A smart fitness app that creates custom workout plans based on user goals and progress.</p>
           <div class="tags">
-            <span class="tag">App</span>
-            <span class="tag">Machine Learning</span>
+            <span class="tag" data-category="App">App</span>
+            <span class="tag" data-category="AI">Machine Learning</span>
             <span class="notag">React Native</span>
           </div>
         </div>
@@ -129,7 +133,7 @@
           <h3>Decentralized File Storage System</h3>
           <p>A secure, decentralized file storage solution using blockchain technology.</p>
           <div class="tags">
-            <span class="tag">Web3</span>
+            <span class="tag" data-category="Web3">Web3</span>
             <span class="notag">IPFS</span>
             <span class="notag">Ethereum</span>
           </div>
@@ -138,8 +142,8 @@
           <h3>Autonomous Drone Navigation System</h3>
           <p>An AI-powered system for autonomous drone navigation in complex environments.</p>
           <div class="tags">
-            <span class="tag">AI</span>
-            <span class="tag">Computer Vision</span>
+            <span class="tag" data-category="AI">AI</span>
+            <span class="tag" data-category="AI">Computer Vision</span>
             <span class="notag">Robotics</span>
           </div>
         </div>
@@ -161,7 +165,7 @@
             <li>Domain-specific idea generation</li>
           </ul>
           <div  style="padding-top: 15px;">
-          <a href="idea-generator.html" class="btn btn-color-1">Try Idea Generator</a>
+          <a href="ideagen.html" class="btn btn-color-1" style="text-decoration: none;">Try Idea Generator</a>
         </div>
         </div>
       </div>

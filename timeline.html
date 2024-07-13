@@ -20,23 +20,38 @@ hackatsits-->
     <title>Timeline - Om Bhojane</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="timeline.css">
+    <link rel="stylesheet" href="mediastyle.css">
 </head>
 <body>
     <nav id="desktop-nav">
         <div class="logo">Om Bhojane</div>
         <div>
-            <ul class="nav-links">
-                <li><a href="index.html#about">About</a></li>
-                <li><a href="ideas.html">Ideas</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="timeline.html">Timeline</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+          <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="ideas.html">Ideas</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="timeline.html">Timeline</a></li>
+          </ul>
         </div>
-    </nav>
-    <nav id="hamburger-nav">
-        <!-- ... (hamburger menu code remains the same) ... -->
-    </nav>
+      </nav>
+      <nav id="hamburger-nav">
+        <div class="logo">Om Bhojane</div>
+        <div class="hamburger-menu">
+          <div class="hamburger-icon" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="menu-links">
+            <li><a href="#about" onclick="toggleMenu()">About</a></li>
+            <li><a href="ideas.html" onclick="toggleMenu()">Ideas</a></li>
+            <li><a href="projects.html" onclick="toggleMenu()">Projects</a></li>
+            <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
+            <li><a href="timeline.html">Timeline</a></li>
+          </div>
+        </div>
+      </nav>
 
     <section id="timeline">
         <h1 class="title">My Journey So Far</h1>
@@ -47,7 +62,7 @@ hackatsits-->
                 <div class="timeline-date-location">Bangalore • 23 March 2024</div>
                 <div class="timeline-content">
                     <div class="timeline-image">
-                        <img src="path/to/build-with-ai-roadshow.jpg" alt="Build with AI Roadshow">
+                        <img src="/assets/chalokisaan.png" alt="Build with AI Roadshow">
                     </div>
                     <div class="timeline-text">
                         <h3>Presented Chalo Kisaan at Build with AI Roadshow</h3>
@@ -86,13 +101,13 @@ hackatsits-->
             
         
             <div class="timeline-card">
-                <div class="timeline-date-location">Mumbai • August 2023 - Present</div>
+                <div class="timeline-date-location">Mumbai • August 2023</div>
                 <div class="timeline-content">
                     <div class="timeline-image">
                         <img src="path/to/gdsc-image.jpg" alt="GDSC APSIT">
                     </div>
                     <div class="timeline-text">
-                        <h3>AI Lead at GDSC APSIT</h3>
+                        <h3>Joining GDSC APSIT Crew!</h3>
                         <p>Took on the role of AI Lead at Google Developer Student Clubs APSIT. Sharing insights about AI, connecting with peers, and growing the community through insightful discussions and events.</p>
                     </div>
                 </div>
@@ -118,7 +133,7 @@ hackatsits-->
                         <img src="path/to/mumbai-hacks-image.jpg" alt="Mumbai Hacks">
                     </div>
                     <div class="timeline-text">
-                        <h3>Mumbai Hacks by GDG MAD</h3>
+                        <h3>Mumbai Hacks Summer Edition</h3>
                         <p>Joined a team of 4 anonymous members at GDG MAD's Mumbai Hacks. Created a Mental Health GPT to guide users on whether they should consult a therapist, focusing on respectful collaboration.</p>
                     </div>
                 </div>
@@ -136,26 +151,31 @@ hackatsits-->
                     </div>
                 </div>
             </div>
-        
-        
-            <div class="timeline-card ">
-                <div class="timeline-date-location">Mumbai • August 2022 - December 2022</div>
-                <div class="timeline-content">
-                    
-                    <div class="timeline-text">
-                        <h3>Technical Lead at Vaze MUN</h3>
-                        <p>Served as Technical Lead for Vaze MUN at V. G. Vaze College of Science. Developed and made major improvements to the vazemun.com website, contributing to the event's success and improving participant communication.</p>
-                    </div>
-                </div>
-            </div>
-        
-            
         </div>
     </section>
 
     <section id="contact">
-        <!-- ... (contact section remains the same) ... -->
-    </section>
+        <p class="section__text__p1">Get in Touch</p>
+        <h1 class="title">Contact Me!</h1>
+        <div class="contact-info-upper-container">
+          <div class="contact-info-container">
+            <img
+              src="./assets/email.png"
+              alt="Email icon"
+              class="icon contact-icon email-icon"
+            />
+            <p><a href="mailto:examplemail@gmail.com">ombhojane05@gmail.com</a></p>
+          </div>
+          <div class="contact-info-container">
+            <img
+              src="./assets/linkedin.png"
+              alt="LinkedIn icon"
+              class="icon contact-icon"
+            />
+            <p><a href="https://www.linkedin.com/in/om-bhojane/">LinkedIn</a></p>
+          </div>
+        </div>
+      </section>
 
     <footer>
         <p>Copyright &#169; 2024 Om Bhojane. All Rights Reserved.</p>

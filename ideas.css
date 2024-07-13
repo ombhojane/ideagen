@@ -97,33 +97,26 @@ p {
   margin-top: 1.5rem;
 }
 
-/* .tag {
+.tag {
   padding: 0.5rem 1rem;
   border-radius: 2rem;
   font-size: 0.9rem;
   font-weight: bold;
   color: white;
-} */
+}
 
-.tag {
+
+.notag{
   padding: 0.5rem 1rem;
-  border-radius: 7px;
+  border-radius: 20px;
   border: solid 1px;
-  border-color: #000000;
+  border-color: #0000 00;
   font-size: 0.9rem;
   font-weight: bold;
   color: #000000;
   background-color: #FFf;
 }
 
-.notag{
-  padding: 0.5rem 1rem;
-  border-radius: 2rem;
-  font-size: 0.9rem;
-  font-weight: bold;
-  color: #333;
-  background-color: #c0c0c0;
-}
 .tag[data-category="AI"] {
   background-color: #FF6E6E; /* Soft red */
 }
