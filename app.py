@@ -18,6 +18,10 @@ def timeline():
 def projects():
     return render_template('projects.html')
 
+@app.route('/resume')
+def resume():
+    return render_template('/static/assets/Resume.pdf')
+
 @app.route('/ideagen')
 def ideagen():
     return render_template('ideagen.html')
