@@ -41,7 +41,9 @@
     </nav>
     <section id="idea-generation">
       <h1 class="title" style="padding-bottom: 10px;">Turn Thoughts into Ideas</h1>
-    <p style="max-width: 1000px;">IdeaGen is an innovative tool designed to help you transform your thoughts into concrete project ideas. Whether you're a student, developer, or entrepreneur, IdeaGen assists you in generating unique and tailored project concepts.</p>
+
+    <p style="max-width: 1000px; font-size: large;">IdeaGen is an innovative tool designed to help you transform your thoughts into concrete project ideas. Whether you're a student, developer, or entrepreneur, IdeaGen assists you in generating unique and tailored project concepts.</p>
+    <div class="new-features" style="border: 1px solid black; border-radius: 10px;"></div>
       <p>What's new:</p>
       <ul class="ul">
         <li>Idea Retention: Now you can reserve the idea, which will not recommended to others </li>
@@ -49,18 +51,205 @@
         <li>More relevant parameters added for best idea generation</li>
         <li>Copy or Save Idea as PDF</li>
       </ul>
-      <div class="iframe-container">
-        <iframe
-          src="https://ombhojane-ideagen.hf.space"
-          frameborder="0"
-          width="850"
-          height="450"
-        ></iframe>
-      </div>
+    </div>
+              
+      <div class="container">
+        <div class="form-container">
+            <div class="form-column">
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category">
+                        <option value="AI">AI</option>
+                        <option value="Web3/Blockchain">Web3/Blockchain</option>
+                        <option value="Website">Website</option>
+                        <option value="App">App</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group" id="other-category-container" style="display: none;">
+                    <label for="other-category">Please specify the category</label>
+                    <input type="text" id="other-category" name="other-category">
+                </div>
+                <div class="form-group">
+                    <label for="proficiency">Proficiency level of the Project</label>
+                    <select id="proficiency" name="proficiency">
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                  <label>Technical Skills (Select all that apply)</label>
+                  <div class="checkbox-group">
+                      <label><input type="checkbox" name="technical-skills" value="Python"> Python</label>
+                      <label><input type="checkbox" name="technical-skills" value="JavaScript"> JavaScript</label>
+                      <label><input type="checkbox" name="technical-skills" value="Machine Learning"> Machine Learning</label>
+                      <label><input type="checkbox" name="technical-skills" value="Data Analysis"> Data Analysis</label>
+                      <label><input type="checkbox" name="technical-skills" value="Web Development"> Web Development</label>
+                      <label><input type="checkbox" name="technical-skills" value="Mobile Development"> Mobile Development</label>
+                      <label><input type="checkbox" name="technical-skills" value="Other"> Other</label>
+                  </div>
+              </div>
+            </div>
+            <div class="form-column">
+                <div class="form-group">
+                    <label for="time-frame">Time available to build</label>
+                    <select id="time-frame" name="time-frame">
+                        <option value="semester-long">semester-long</option>
+                        <option value="month-long">month-long</option>
+                        <option value="week-long">week-long</option>
+                        <option value="Custom">Custom</option>
+                    </select>
+                </div>
+                <div class="form-group" id="custom-time-container" style="display: none;">
+                    <label for="custom-time">Specify custom time interval</label>
+                    <input type="text" id="custom-time" name="custom-time">
+                </div>
+                <div class="form-group">
+                    <label for="team-size">Team Size</label>
+                    <input type="number" id="team-size" name="team-size" min="1" max="10" value="1">
+                </div>
+                <div class="form-group">
+                  <label>Project Goals (Select one)</label>
+                  <div class="radio-group">
+                      <label><input type="radio" name="project-goals" value="Learning"> Learning</label>
+                      <label><input type="radio" name="project-goals" value="Commercial Potential"> Commercial Potential</label>
+                      <label><input type="radio" name="project-goals" value="Social Impact"> Social Impact</label>
+                      <label><input type="radio" name="project-goals" value="Research"> Research</label>
+                      <label><input type="radio" name="project-goals" value="Other"> Other</label>
+                  </div>
+              </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="theme">Any specific theme, problem statement, or ideas in mind? (Optional)</label>
+            <textarea id="theme" name="theme" rows="4"></textarea>
+        </div>
+        <button id="generate-ideas" class="btn">Generate Ideas</button>
+        <div id="ideas-container"></div>
+    </div>
+
     </section>
     <footer>
       <p>Copyright &#169; 2023 Om Bhojane.</p>
     </footer>
-    <script src="script.js"></script>
+    <script src="/static/js/script.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+    const categorySelect = document.getElementById('category');
+    const otherCategoryContainer = document.getElementById('other-category-container');
+    const timeFrameSelect = document.getElementById('time-frame');
+    const customTimeContainer = document.getElementById('custom-time-container');
+    const generateButton = document.getElementById('generate-ideas');
+    const ideasContainer = document.getElementById('ideas-container');
+
+    categorySelect.addEventListener('change', () => {
+        otherCategoryContainer.style.display = categorySelect.value === 'Other' ? 'block' : 'none';
+    });
+
+    timeFrameSelect.addEventListener('change', () => {
+        customTimeContainer.style.display = timeFrameSelect.value === 'Custom' ? 'block' : 'none';
+    });
+
+    generateButton.addEventListener('click', generateIdeas);
+
+    function generateIdeas() {
+    const data = {
+        category: categorySelect.value === 'Other' ? document.getElementById('other-category').value : categorySelect.value,
+        proficiency: document.getElementById('proficiency').value,
+        time_frame: timeFrameSelect.value === 'Custom' ? document.getElementById('custom-time').value : timeFrameSelect.value,
+        team_size: document.getElementById('team-size').value,
+        technical_skills: Array.from(document.querySelectorAll('input[name="technical-skills"]:checked')).map(checkbox => checkbox.value),
+        project_goals: document.querySelector('input[name="project-goals"]:checked').value,
+        theme: document.getElementById('theme').value
+    };
+
+    fetch('/generate_ideas', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(ideas => {
+        displayIdeas(ideas);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+    function displayIdeas(ideas) {
+        ideasContainer.innerHTML = '';
+        ideas.forEach((idea, index) => {
+            const ideaElement = document.createElement('div');
+            ideaElement.classList.add('idea');
+            ideaElement.innerHTML = `
+                <h3>${idea.title}</h3>
+                <p><strong>Description:</strong> ${idea.description}</p>
+                <p><strong>Key Features:</strong></p>
+                <ul>
+                    ${idea.features.map(feature => `<li>${feature}</li>`).join('')}
+                </ul>
+                <p><strong>Potential Impact:</strong> ${idea.impact}</p>
+                <div class="idea-actions">
+                    <button class="btn reserve-btn" data-id="${idea.id}">Reserve Idea</button>
+                    <button class="btn copy-btn" data-id="${index}">Copy Idea</button>
+                    <a href="/download_pdf/${idea.id}" class="btn download-btn" target="_blank">Download PDF</a>
+                </div>
+            `;
+            ideasContainer.appendChild(ideaElement);
+        });
+
+        // Add event listeners for reserve buttons
+        document.querySelectorAll('.reserve-btn').forEach(button => {
+            button.addEventListener('click', reserveIdea);
+        });
+
+        // Add event listeners for copy buttons
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', copyIdea);
+        });
+    }
+
+    function reserveIdea(event) {
+        const ideaId = event.target.getAttribute('data-id');
+        fetch('/reserve_idea', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ idea_id: ideaId }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Idea reserved successfully!');
+                event.target.disabled = true;
+                event.target.textContent = 'Reserved';
+            } else {
+                alert('Failed to reserve idea. Please try again.');
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+
+    function copyIdea(event) {
+        const index = event.target.getAttribute('data-id');
+        const idea = ideasContainer.querySelectorAll('.idea')[index];
+        const ideaText = idea.innerText;
+        
+        navigator.clipboard.writeText(ideaText).then(() => {
+            alert('Idea copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
+    }
+});
+    </script>
   </body>
 </html>
