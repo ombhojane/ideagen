@@ -1,7 +1,5 @@
 Flask
+google-generativeai
 gunicorn
-langchain
-langchain_google_genai
-langsmith
 pymongo
 fpdf

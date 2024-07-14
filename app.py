@@ -1,14 +1,11 @@
 from flask import Flask, render_template, request, jsonify, send_file
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
 from pymongo import MongoClient
 from bson import ObjectId
 import json
-import base64
 from fpdf import FPDF
 import io
 import os
+import google.generativeai as genai
 
 app = Flask(__name__)
 
@@ -16,22 +13,36 @@ app = Flask(__name__)
 MONGODB_URI = os.environ.get('MONGODB_URI')
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 
+genai.configure(api_key=GOOGLE_API_KEY)
+
 def get_db():
     client = MongoClient(MONGODB_URI)
     return client["idea_generator"]
 
-def get_llm():
-    return ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0.7, google_api_key=GOOGLE_API_KEY)
+def get_generation_config():
+    return {
+        "temperature": 0.9,
+        "top_p": 1,
+        "top_k": 1,
+        "max_output_tokens": 2048,
+    }
+
+def get_safety_settings():
+    return [
+        {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
+        {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
+        {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
+        {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
+    ]
+
 
 def generate_ideas(prompt):
-    llm = get_llm()
-    prompt_template = PromptTemplate(
-        input_variables=["prompt"],
-        template="{prompt}"
-    )
-    chain = LLMChain(llm=llm, prompt=prompt_template)
-    response = chain.run(prompt)
-    return response
+    model = genai.GenerativeModel(model_name="gemini-pro",
+                                  generation_config=get_generation_config(),
+                                  safety_settings=get_safety_settings())
+    response = model.generate_content([prompt])
+    return response.text
+
 
 def store_idea(idea, metadata):
     db = get_db()
@@ -155,9 +166,13 @@ def generate_ideas_route():
     Ensure that each idea is distinct, innovative, and tailored to the specified parameters.
     Note: The output should be a JSON object that details the analysis and recommendations without including the term 'json' or any programming syntax markers.
     """
-
+    print(prompt)
     ideas_json = generate_ideas(prompt)
-    ideas = json.loads(ideas_json)
+    print(ideas_json)
+    try:
+        ideas = json.loads(ideas_json)
+    except json.JSONDecodeError:
+        return jsonify({"error": "Please Retry"}), 500
 
     for idea in ideas:
         idea_id = store_idea(idea, {
