@@ -8,19 +8,23 @@ import json
 import base64
 from fpdf import FPDF
 import io
+import os
 
 app = Flask(__name__)
 
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0.7)
+# Use environment variables for sensitive information
+MONGODB_URI = os.environ.get('MONGODB_URI')
+GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 
-# Initialize MongoDB client
-client = MongoClient("mongodb+srv://aminvasudev6:wcw9QsKgW3rUeGA4@waybillCluster.88jnvsg.mongodb.net/?retryWrites=true&w=majority&appName=waybillCluster")
-db = client["idea_generator"]
-ideas_collection = db["ideas"]
-reserved_ideas_collection = db["reserved_ideas"]
+def get_db():
+    client = MongoClient(MONGODB_URI)
+    return client["idea_generator"]
 
+def get_llm():
+    return ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0.7, google_api_key=GOOGLE_API_KEY)
 
 def generate_ideas(prompt):
+    llm = get_llm()
     prompt_template = PromptTemplate(
         input_variables=["prompt"],
         template="{prompt}"
@@ -30,6 +34,8 @@ def generate_ideas(prompt):
     return response
 
 def store_idea(idea, metadata):
+    db = get_db()
+    ideas_collection = db["ideas"]
     idea_doc = {
         "title": idea['title'],
         "description": idea['description'],
@@ -40,6 +46,9 @@ def store_idea(idea, metadata):
     return ideas_collection.insert_one(idea_doc).inserted_id
 
 def reserve_idea(idea_id, user_id):
+    db = get_db()
+    ideas_collection = db["ideas"]
+    reserved_ideas_collection = db["reserved_ideas"]
     idea = ideas_collection.find_one({"_id": ObjectId(idea_id)})
     if idea:
         reserved_idea = {
@@ -56,6 +65,8 @@ def reserve_idea(idea_id, user_id):
     return False
 
 def get_reserved_ideas():
+    db = get_db()
+    reserved_ideas_collection = db["reserved_ideas"]
     return list(reserved_ideas_collection.find({}, {"title": 1, "description": 1}))
 
 def create_pdf(idea):
@@ -117,7 +128,7 @@ def generate_ideas_route():
     Time available: {time_frame}
     Team size: {team_size}
     Technical skills: {', '.join(technical_skills)}
-    Project goals: {', '.join(project_goals)}
+    Project goals: {project_goals}
     Additional context: {theme}
 
     Focus on creating truly innovative, cutting-edge ideas that push the boundaries of current technology. Consider emerging trends, potential breakthroughs, and interdisciplinary approaches.
@@ -137,7 +148,7 @@ def generate_ideas_route():
         "title": "Project Title",
         "description": "Brief description of the project",
         "features": ["Feature 1", "Feature 2", "Feature 3"],
-        "impact": "Description of potential impact and benefits",
+        "impact": "Description of potential impact and benefits"
       }},
       ...
     ]
@@ -145,11 +156,7 @@ def generate_ideas_route():
     Note: The output should be a JSON object that details the analysis and recommendations without including the term 'json' or any programming syntax markers.
     """
 
-    print("Prompt:")
-    print(prompt)
     ideas_json = generate_ideas(prompt)
-    print("Ideas:")
-    print(ideas_json)
     ideas = json.loads(ideas_json)
 
     for idea in ideas:
@@ -175,6 +182,8 @@ def reserve_idea_route():
 
 @app.route('/download_pdf/<idea_id>')
 def download_pdf(idea_id):
+    db = get_db()
+    ideas_collection = db["ideas"]
     idea = ideas_collection.find_one({"_id": ObjectId(idea_id)})
     if idea:
         pdf_content = create_pdf(idea)
@@ -186,6 +195,6 @@ def download_pdf(idea_id):
         )
     return "Idea not found", 404
 
-
+# This is for local development. Vercel will ignore this.
 if __name__ == '__main__':
     app.run(debug=True)
