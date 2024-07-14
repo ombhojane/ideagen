@@ -12,10 +12,5 @@
         "src": "/(.*)",
         "dest": "/"
       }
-    ],
-    "functions": {
-      "api/*.py": {
-        "maxDuration": 60
-      }
-    }
+    ]
   }
