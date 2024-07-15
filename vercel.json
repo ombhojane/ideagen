@@ -2,7 +2,7 @@
   "version": 2,
   "functions": {
       "api/index.py": {
-          "runtime": "python3@3.9.12",
+          "runtime": "python3@3.12",
           "memory": 1024,
           "maxDuration": 30
       }
