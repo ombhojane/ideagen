@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, BackgroundTasks
 from fastapi.responses import JSONResponse, FileResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -12,6 +12,7 @@ import io
 from fpdf import FPDF
 import os
 import uvicorn
+import asyncio
 
 app = FastAPI()
 
@@ -24,10 +25,10 @@ MONGODB_URI = os.environ.get('MONGODB_URI')
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 
 # Configure Gemini
-genai.configure(api_key=GOOGLE_API_KEY)
+genai.configure(api_key="AIzaSyDT6Nw0reBf8HzgUlUDx4qFdHNs0jpr3iU")
 
 # Initialize MongoDB client
-client = MongoClient(MONGODB_URI)
+client = MongoClient("mongodb+srv://aminvasudev6:wcw9QsKgW3rUeGA4@waybillcluster.88jnvsg.mongodb.net/?retryWrites=true&w=majority&appName=waybillCluster")
 db = client["idea_generator"]
 ideas_collection = db["ideas"]
 reserved_ideas_collection = db["reserved_ideas"]
@@ -48,14 +49,15 @@ def get_safety_settings():
         {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
     ]
 
-def generate_ideas(prompt):
+async def generate_ideas_async(prompt):
     model = genai.GenerativeModel(model_name="gemini-pro",
                                   generation_config=get_generation_config(),
                                   safety_settings=get_safety_settings())
-    response = model.generate_content([prompt])
+    response = await model.generate_content_async([prompt])
+    print(response.text)
     return response.text
 
-def store_idea(idea, metadata):
+async def store_idea(idea, metadata):
     idea_doc = {
         "title": idea['title'],
         "description": idea['description'],
@@ -63,7 +65,8 @@ def store_idea(idea, metadata):
         "impact": idea['impact'],
         "metadata": metadata
     }
-    return ideas_collection.insert_one(idea_doc).inserted_id
+    result = await ideas_collection.insert_one(idea_doc)
+    return result.inserted_id
 
 def reserve_idea(idea_id, user_id):
     idea = ideas_collection.find_one({"_id": ObjectId(idea_id)})
@@ -97,7 +100,6 @@ def create_pdf(idea):
     pdf.multi_cell(0, 10, txt=f"Potential Impact: {idea['impact']}")
     
     return pdf.output(dest='S').encode('latin-1')
-
 
 class IdeaRequest(BaseModel):
     category: str
@@ -136,8 +138,8 @@ async def ideagen(request: Request):
     return templates.TemplateResponse("ideagen.html", {"request": request})
 
 @app.post("/generate_ideas")
-async def generate_ideas_route(idea_request: IdeaRequest):
-    reserved_ideas = get_reserved_ideas()
+async def generate_ideas_route(idea_request: IdeaRequest, background_tasks: BackgroundTasks):
+    reserved_ideas = list(reserved_ideas_collection.find({}, {"title": 1, "description": 1}))
     reserved_ideas_prompt = "\n".join([f"- {idea['title']}: {idea['description']}" for idea in reserved_ideas])
 
     prompt = f"""
@@ -173,39 +175,56 @@ async def generate_ideas_route(idea_request: IdeaRequest):
     ]
     Ensure that each idea is distinct, innovative, and tailored to the specified parameters.
     Note: The output should be a JSON object that details the analysis and recommendations without including the term 'json' or any programming syntax markers.
-    Important note: Don't wrapp the output in a JSON object or include any additional information, some times it wrapped with ```json. Only provide the array of ideas as shown above.
+    Important note: Don't wrap the output in a JSON object or include any additional information, sometimes it wrapped with ```json. Only provide the array of ideas as shown above.
     """
 
-    print("Prompt:", prompt)
+    background_tasks.add_task(process_and_store_ideas, prompt, idea_request)
+    
+    return {"message": "Ideas generation started. Please check back in a few moments."}
 
-    ideas_json = generate_ideas(prompt)
-    print("Ideas generated:", ideas_json)
+async def process_and_store_ideas(prompt, idea_request):
     try:
+        ideas_json = await generate_ideas_async(prompt)
         ideas = json.loads(ideas_json)
-    except json.JSONDecodeError:
-        raise HTTPException(status_code=500, detail="Failed to generate valid ideas")
 
-    for idea in ideas:
-        idea_id = store_idea(idea, {
-            "category": idea_request.category,
-            "proficiency": idea_request.proficiency,
-            "time_frame": idea_request.time_frame,
-            "technical_skills": idea_request.technical_skills,
-            "team_size": idea_request.team_size,
-            "project_goals": idea_request.project_goals
-        })
-        idea['id'] = str(idea_id)
+        for idea in ideas:
+            idea_id = ideas_collection.insert_one({
+                "title": idea['title'],
+                "description": idea['description'],
+                "features": idea['features'],
+                "impact": idea['impact'],
+                "metadata": {
+                    "category": idea_request.category,
+                    "proficiency": idea_request.proficiency,
+                    "time_frame": idea_request.time_frame,
+                    "technical_skills": idea_request.technical_skills,
+                    "team_size": idea_request.team_size,
+                    "project_goals": idea_request.project_goals
+                }
+            }).inserted_id
+            idea['id'] = str(idea_id)
 
-    return ideas
+        # Store the generated ideas in a global variable or database for later retrieval
+        app.state.latest_ideas = ideas
+    except Exception as e:
+        print(f"Error in process_and_store_ideas: {e}")
+        app.state.latest_ideas = None
+
+@app.get("/get_latest_ideas")
+async def get_latest_ideas():
+    if hasattr(app.state, 'latest_ideas'):
+        return app.state.latest_ideas
+    else:
+        return {"message": "No ideas generated yet"}
 
 @app.post("/reserve_idea")
-async def reserve_idea_route(reserve_request: ReserveIdeaRequest):
+def reserve_idea_route(reserve_request: ReserveIdeaRequest):
     user_id = "example_user_id"  # Replace with actual user authentication
     success = reserve_idea(reserve_request.idea_id, user_id)
     return {"success": success}
 
 @app.get("/download_pdf/{idea_id}")
-async def download_pdf(idea_id: str):
+def download_pdf(idea_id: str):
     idea = ideas_collection.find_one({"_id": ObjectId(idea_id)})
     if idea:
         pdf_content = create_pdf(idea)
@@ -216,3 +235,5 @@ async def download_pdf(idea_id: str):
         )
     raise HTTPException(status_code=404, detail="Idea not found")
 
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
