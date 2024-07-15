@@ -1,5 +1,7 @@
-Flask
+fastapi
+uvicorn
+jinja2
+python-multipart
 google-generativeai
-gunicorn
 pymongo
 fpdf

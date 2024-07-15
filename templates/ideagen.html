@@ -154,91 +154,97 @@
 
     generateButton.addEventListener('click', generateIdeas);
 
-    function generateIdeas() {
+    async function generateIdeas() {
     const data = {
         category: categorySelect.value === 'Other' ? document.getElementById('other-category').value : categorySelect.value,
         proficiency: document.getElementById('proficiency').value,
         time_frame: timeFrameSelect.value === 'Custom' ? document.getElementById('custom-time').value : timeFrameSelect.value,
-        team_size: document.getElementById('team-size').value,
+        team_size: parseInt(document.getElementById('team-size').value),
         technical_skills: Array.from(document.querySelectorAll('input[name="technical-skills"]:checked')).map(checkbox => checkbox.value),
-        project_goals: document.querySelector('input[name="project-goals"]:checked').value,
+        project_goals: [document.querySelector('input[name="project-goals"]:checked').value],
         theme: document.getElementById('theme').value
     };
 
-    fetch('/generate_ideas', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-    .then(response => response.json())
-    .then(ideas => {
+    try {
+        const response = await fetch('/generate_ideas', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const ideas = await response.json();
         displayIdeas(ideas);
-    })
-    .catch((error) => {
+    } catch (error) {
         console.error('Error:', error);
+        alert('Failed to generate ideas. Please try again.');
+    }
+}
+
+function displayIdeas(ideas) {
+    ideasContainer.innerHTML = '';
+    ideas.forEach((idea, index) => {
+        const ideaElement = document.createElement('div');
+        ideaElement.classList.add('idea');
+        ideaElement.innerHTML = `
+            <h3>${idea.title}</h3>
+            <p><strong>Description:</strong> ${idea.description}</p>
+            <p><strong>Key Features:</strong></p>
+            <ul>
+                ${idea.features.map(feature => `<li>${feature}</li>`).join('')}
+            </ul>
+            <p><strong>Potential Impact:</strong> ${idea.impact}</p>
+            <div class="idea-actions">
+                <button class="btn reserve-btn" data-id="${idea.id}">Reserve Idea</button>
+                <button class="btn copy-btn" data-id="${index}">Copy Idea</button>
+                <a href="/download_pdf/${idea.id}" class="btn download-btn" target="_blank">Download PDF</a>
+            </div>
+        `;
+        ideasContainer.appendChild(ideaElement);
+    });
+
+    // Add event listeners for reserve buttons
+    document.querySelectorAll('.reserve-btn').forEach(button => {
+        button.addEventListener('click', reserveIdea);
+    });
+
+    // Add event listeners for copy buttons
+    document.querySelectorAll('.copy-btn').forEach(button => {
+        button.addEventListener('click', copyIdea);
     });
 }
 
-    function displayIdeas(ideas) {
-        ideasContainer.innerHTML = '';
-        ideas.forEach((idea, index) => {
-            const ideaElement = document.createElement('div');
-            ideaElement.classList.add('idea');
-            ideaElement.innerHTML = `
-                <h3>${idea.title}</h3>
-                <p><strong>Description:</strong> ${idea.description}</p>
-                <p><strong>Key Features:</strong></p>
-                <ul>
-                    ${idea.features.map(feature => `<li>${feature}</li>`).join('')}
-                </ul>
-                <p><strong>Potential Impact:</strong> ${idea.impact}</p>
-                <div class="idea-actions">
-                    <button class="btn reserve-btn" data-id="${idea.id}">Reserve Idea</button>
-                    <button class="btn copy-btn" data-id="${index}">Copy Idea</button>
-                    <a href="/download_pdf/${idea.id}" class="btn download-btn" target="_blank">Download PDF</a>
-                </div>
-            `;
-            ideasContainer.appendChild(ideaElement);
-        });
-
-        // Add event listeners for reserve buttons
-        document.querySelectorAll('.reserve-btn').forEach(button => {
-            button.addEventListener('click', reserveIdea);
-        });
-
-        // Add event listeners for copy buttons
-        document.querySelectorAll('.copy-btn').forEach(button => {
-            button.addEventListener('click', copyIdea);
-        });
-    }
-
-    function reserveIdea(event) {
-        const ideaId = event.target.getAttribute('data-id');
-        fetch('/reserve_idea', {
+async function reserveIdea(event) {
+    const ideaId = event.target.getAttribute('data-id');
+    try {
+        const response = await fetch('/reserve_idea', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ idea_id: ideaId }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Idea reserved successfully!');
-                event.target.disabled = true;
-                event.target.textContent = 'Reserved';
-            } else {
-                alert('Failed to reserve idea. Please try again.');
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
         });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        if (data.success) {
+            alert('Idea reserved successfully!');
+            event.target.disabled = true;
+            event.target.textContent = 'Reserved';
+        } else {
+            alert('Failed to reserve idea. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to reserve idea. Please try again.');
     }
+}
 
-    function copyIdea(event) {
+function copyIdea(event) {
         const index = event.target.getAttribute('data-id');
         const idea = ideasContainer.querySelectorAll('.idea')[index];
         const ideaText = idea.innerText;

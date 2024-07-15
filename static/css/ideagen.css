@@ -1,200 +1,206 @@
 /* Idea Generation Specific Styles */
 #idea-generation {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 4vh;
-  min-height: 80vh;
-}
-
-#idea-generation ul{
-  padding-left: 20px;
-  font-size: medium;
-}
-
-#idea-generation p{
-  font-size:larger;
-}
-
-#idea-generation-fx{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 80vh;
-  width: 100%;
-  max-width: 1400px; /* Increased from 1200px for wider desktop UI */
-  margin: 0 auto;
-}
-
-.container {
-    max-width: 1200px; /* Increased from 800px for wider desktop UI */
-    margin: 0 auto;
-    padding: 2rem;
-}
-
-.big-font {
-    font-size: 2.5rem; /* Slightly increased for better visibility */
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-.form-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: space-between; /* Ensures even spacing */
-}
-
-.form-column {
-    flex: 1 1 calc(50% - 1rem); /* Adjust width for two columns */
-    min-width: 300px;
-}
-
-.form-group {
-    margin-bottom: 1.5rem; /* Increased for better spacing */
-}
-
-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: bold; /* Makes labels stand out */
-}
-
-input[type="text"],
-input[type="number"],
-select,
-textarea {
-    width: 100%;
-    padding: 0.75rem; /* Increased for better touch targets */
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 1rem; /* Consistent font size */
-}
-
-select[multiple] {
-    height: auto;
-    min-height: 120px; /* Slightly increased */
-}
-
-.btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 0.75rem 1.5rem; /* Increased padding */
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1.1rem; /* Slightly larger font */
-    display: block;
-    margin: 2rem auto;
-    width: 100%;
-    max-width: 300px;
-    transition: background-color 0.3s ease; /* Smooth hover effect */
-}
-
-.btn:hover {
-    background-color: #45a049;
-}
-
-#ideas-container {
-    margin-top: 2rem;
-    width: 100%;
-}
-
-.idea {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px; /* Slightly more rounded corners */
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for depth */
-}
-
-.idea h3 {
-    margin-top: 0;
-    color: #333;
-}
-
-.idea ul {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 4vh;
+    min-height: 80vh;
+  }
+  
+  #idea-generation ul{
     padding-left: 20px;
-    margin-bottom: 1rem;
-}
-
-.idea-actions {
+    font-size: medium;
+  }
+  
+  #idea-generation p{
+    font-size:larger;
+  }
+  
+  #idea-generation-fx{
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
-}
-
-.idea-actions button,
-.idea-actions .btn {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
+    flex-direction: column;
+    align-items: center;
+    min-height: 80vh;
+    width: 100%;
+    max-width: 1400px; /* Increased from 1200px for wider desktop UI */
+    margin: 0 auto;
+  }
+  
+  .container {
+      max-width: 1200px; /* Increased from 800px for wider desktop UI */
+      margin: 0 auto;
+      padding: 2rem;
+  }
+  
+  .big-font {
+      font-size: 2.5rem; /* Slightly increased for better visibility */
+      margin-bottom: 2rem;
+      text-align: center;
+  }
+  
+  .form-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: space-between; /* Ensures even spacing */
+  }
+  
+  .form-column {
+      flex: 1 1 calc(50% - 1rem); /* Adjust width for two columns */
+      min-width: 300px;
+  }
+  
+  .form-group {
+      margin-bottom: 1.5rem; /* Increased for better spacing */
+  }
+  
+  label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold; /* Makes labels stand out */
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  select,
+  textarea {
+      width: 100%;
+      padding: 0.75rem; /* Increased for better touch targets */
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 1rem; /* Consistent font size */
+  }
+  
+  select[multiple] {
+      height: auto;
+      min-height: 120px; /* Slightly increased */
+  }
+  
+  .btn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 0.75rem 1.5rem; /* Increased padding */
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1.1rem; /* Slightly larger font */
+      display: block;
+      margin: 2rem auto;
+      width: 100%;
+      max-width: 300px;
+      transition: background-color 0.3s ease; /* Smooth hover effect */
+  }
+  
+  .btn:hover {
+      background-color: #45a049;
+  }
+  
+  #ideas-container {
+      margin-top: 2rem;
+      width: 100%;
+  }
+  
+  .idea {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 8px; /* Slightly more rounded corners */
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+  }
+  
+  .idea h3 {
+      margin-top: 0;
+      color: #333;
+  }
+  
+  .idea ul {
+      padding-left: 20px;
+      margin-bottom: 1rem;
+  }
+  
+  .idea-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+  }
+  
+  .idea-actions button,
+  .idea-actions .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      color: white;
+      flex: 1 1 calc(33.333% - 0.5rem); /* Distribute buttons evenly */
+      min-width: 120px; /* Ensure buttons don't get too narrow */
+      text-align: center;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease;
+  }
+  
+  .idea-actions .reserve-btn {
+      background-color: #4CAF50;
+  }
+  
+  .idea-actions .copy-btn {
+      background-color: #008CBA;
+  }
+  
+  .idea-actions .download-btn {
+      background-color: #f44336;
+  }
+  
+  .idea-actions button:hover,
+  .idea-actions .btn:hover {
+      opacity: 0.9;
+  }
+  
+  @media (max-width: 768px) {
+      .container {
+          padding: 1rem;
+      }
+  
+      .form-column {
+          flex-basis: 100%;
+      }
+  
+      .big-font {
+          font-size: 2rem;
+      }
+  
+      .idea-actions {
+          flex-direction: column;
+      }
+  
+      .idea-actions button,
+      .idea-actions .btn {
+          width: 100%;
+          margin-bottom: 0.5rem;
+      }
+  }
+  
+  .checkbox-group, .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .checkbox-group label, .radio-group label {
+    display: flex;
+    align-items: center;
     cursor: pointer;
-    text-decoration: none;
-    color: white;
-    flex: 1 1 calc(33.333% - 0.5rem); /* Distribute buttons evenly */
-    min-width: 120px; /* Ensure buttons don't get too narrow */
+  }
+  
+  .checkbox-group input[type="checkbox"], .radio-group input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .loading {
     text-align: center;
-    font-size: 0.9rem;
-    transition: background-color 0.3s ease;
-}
-
-.idea-actions .reserve-btn {
-    background-color: #4CAF50;
-}
-
-.idea-actions .copy-btn {
-    background-color: #008CBA;
-}
-
-.idea-actions .download-btn {
-    background-color: #f44336;
-}
-
-.idea-actions button:hover,
-.idea-actions .btn:hover {
-    opacity: 0.9;
-}
-
-@media (max-width: 768px) {
-    .container {
-        padding: 1rem;
-    }
-
-    .form-column {
-        flex-basis: 100%;
-    }
-
-    .big-font {
-        font-size: 2rem;
-    }
-
-    .idea-actions {
-        flex-direction: column;
-    }
-
-    .idea-actions button,
-    .idea-actions .btn {
-        width: 100%;
-        margin-bottom: 0.5rem;
-    }
-}
-
-.checkbox-group, .radio-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.checkbox-group label, .radio-group label {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.checkbox-group input[type="checkbox"], .radio-group input[type="radio"] {
-  margin-right: 0.5rem;
+    padding: 20px;
+    font-style: italic;
 }
