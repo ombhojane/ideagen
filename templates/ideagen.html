@@ -226,37 +226,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function displayIdeas(ideas) {
-            ideasContainer.innerHTML = '';
-            ideas.forEach((idea, index) => {
-                const ideaElement = document.createElement('div');
-                ideaElement.classList.add('idea');
-                ideaElement.innerHTML = `
-                    <h3>${idea.title}</h3>
-                    <p><strong>Description:</strong> ${idea.description}</p>
-                    <p><strong>Key Features:</strong></p>
-                     ${idea.features.map(feature => `<li>${feature}</li>`).join('')}
-                    </ul>
-                    <p><strong>Potential Impact:</strong> ${idea.impact}</p>
-                    <div class="idea-actions">
-                        <button class="btn reserve-btn" data-id="${idea.id}">Reserve Idea</button>
-                        <button class="btn copy-btn" data-id="${index}">Copy Idea</button>
-                        <a href="/download_pdf/${idea.id}" class="btn download-btn" target="_blank">Download PDF</a>
-                    </div>
-                `;
-                ideasContainer.appendChild(ideaElement);
-            });
+    ideasContainer.innerHTML = '';
+    ideas.forEach((idea, index) => {
+        const ideaElement = document.createElement('div');
+        ideaElement.classList.add('idea');
+        ideaElement.innerHTML = `
+            <h3>${idea.title}</h3>
+            <p><strong>Description:</strong> ${idea.description}</p>
+            <p><strong>Key Features:</strong></p>
+            <ul>
+                ${idea.features.map(feature => `<li>${feature}</li>`).join('')}
+            </ul>
+            <p><strong>Potential Impact:</strong> ${idea.impact}</p>
+            <p><strong>Implementation Steps:</strong></p>
+            <ol>
+                ${idea.implementation_steps.map(step => `<li>${step}</li>`).join('')}
+            </ol>
+            <p><strong>Recommended Tech Stack:</strong></p>
+            <ul>
+                ${idea.tech_stack.map(tech => `<li><strong>${tech.name}:</strong> ${tech.reason}</li>`).join('')}
+            </ul>
+            <div class="idea-actions">
+                <button class="btn reserve-btn" data-id="${idea.id}">Reserve Idea</button>
+                <button class="btn copy-btn" data-id="${index}">Copy Idea</button>
+                <a href="/download_pdf/${idea.id}" class="btn download-btn" target="_blank">Download PDF</a>
+            </div>
+        `;
+        ideasContainer.appendChild(ideaElement);
+    });
 
-            // Add event listeners for reserve buttons
-            document.querySelectorAll('.reserve-btn').forEach(button => {
-                button.addEventListener('click', reserveIdea);
-            });
+    // Add event listeners for reserve buttons
+    document.querySelectorAll('.reserve-btn').forEach(button => {
+        button.addEventListener('click', reserveIdea);
+    });
 
-            // Add event listeners for copy buttons
-            document.querySelectorAll('.copy-btn').forEach(button => {
-                button.addEventListener('click', copyIdea);
-            });
-        }
-
+    // Add event listeners for copy buttons
+    document.querySelectorAll('.copy-btn').forEach(button => {
+        button.addEventListener('click', copyIdea);
+    });
+}
         async function reserveIdea(event) {
             const ideaId = event.target.getAttribute('data-id');
             try {
@@ -285,16 +293,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function copyIdea(event) {
-            const index = event.target.getAttribute('data-id');
-            const idea = ideasContainer.querySelectorAll('.idea')[index];
-            const ideaText = idea.innerText;
-            
-            navigator.clipboard.writeText(ideaText).then(() => {
-                alert('Idea copied to clipboard!');
-            }).catch(err => {
-                console.error('Failed to copy text: ', err);
-            });
-        }
+    const index = event.target.getAttribute('data-id');
+    const idea = ideasContainer.querySelectorAll('.idea')[index];
+    const ideaText = idea.innerText;
+    
+    navigator.clipboard.writeText(ideaText).then(() => {
+        alert('Idea copied to clipboard!');
+    }).catch(err => {
+        console.error('Failed to copy text: ', err);
+    });
+}
     });
     </script>
   </body>
