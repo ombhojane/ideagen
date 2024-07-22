@@ -21,8 +21,8 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 # Use environment variables for sensitive information
-MONGODB_URI = os.environ.get('MONGODB_URI')
-GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
+MONGODB_URI = "mongodb+srv://aminvasudev6:wcw9QsKgW3rUeGA4@waybillcluster.88jnvsg.mongodb.net/?retryWrites=true&w=majority&appName=waybillCluster"
+GOOGLE_API_KEY = "AIzaSyDT6Nw0reBf8HzgUlUDx4qFdHNs0jpr3iU"
 
 # Configure Gemini
 genai.configure(api_key=GOOGLE_API_KEY)

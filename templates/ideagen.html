@@ -8,6 +8,104 @@
     <link rel="stylesheet" href="/static/css/style.css"/>
     <link rel="stylesheet" href="/static/css/ideagen.css"/>
     <link rel="stylesheet" href="/static/css/mediastyle.css" />
+    <style>
+        
+.idea {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.idea:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.idea h3 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.idea p {
+    color: #555;
+    line-height: 1.6;
+}
+
+.idea ul, .idea ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+    color: #555;
+}
+
+.idea li {
+    margin-bottom: 0.5rem;
+}
+
+.idea-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.idea-actions button,
+.idea-actions .btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    flex: 1 1 calc(33.333% - 1rem);
+    min-width: 120px;
+    text-align: center;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.idea-actions .reserve-btn {
+    background-color: #4CAF50;
+}
+
+.idea-actions .copy-btn {
+    background-color: #008CBA;
+}
+
+.idea-actions .download-btn {
+    background-color: #f44336;
+}
+
+.idea-actions button:hover,
+.idea-actions .btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .idea {
+        padding: 1.5rem;
+    }
+
+    .idea-actions {
+        flex-direction: column;
+    }
+
+    .idea-actions button,
+    .idea-actions .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
+    </style>
   </head>
   <body>
     <nav id="desktop-nav">
@@ -157,7 +255,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         generateButton.addEventListener('click', generateIdeas);
 
+        let isGenerating = false;
+
         async function generateIdeas() {
+            if (isGenerating) {
+                alert('Please wait, ideas are still being generated.');
+                return;
+            }
+
+             isGenerating = true;
             const data = {
                 category: categorySelect.value === 'Other' ? document.getElementById('other-category').value : categorySelect.value,
                 proficiency: document.getElementById('proficiency').value,
@@ -167,63 +273,71 @@ document.addEventListener('DOMContentLoaded', () => {
                 project_goals: [document.querySelector('input[name="project-goals"]:checked').value],
                 theme: document.getElementById('theme').value
             };
+        
+
+           
 
             try {
-                loadingElement.style.display = 'block';
-                ideasContainer.innerHTML = '';
-                
-                const response = await fetch('/generate_ideas', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                
-                const result = await response.json();
-                console.log(result.message);
-                
-                // Poll for ideas
-                await pollForIdeas();
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Failed to generate ideas. Please try again.');
-            } finally {
-                loadingElement.style.display = 'none';
-            }
+        loadingElement.style.display = 'block';
+        ideasContainer.innerHTML = '';
+        
+        const response = await fetch('/generate_ideas', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+        
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
+        
+        const result = await response.json();
+        console.log(result.message);
+        
+        // Wait for ideas to be generated
+        await pollForIdeas();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to generate ideas. Please try again.');
+    } finally {
+        loadingElement.style.display = 'none';
+        isGenerating = false;
+    }
+}
 
-        async function pollForIdeas() {
-            const maxAttempts = 30; // 30 seconds timeout
-            let attempts = 0;
 
-            while (attempts < maxAttempts) {
-                try {
-                    const response = await fetch('/get_latest_ideas');
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    const data = await response.json();
-                    
-                    if (data.message === "No ideas generated yet") {
-                        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before next attempt
-                        attempts++;
-                    } else {
-                        displayIdeas(data);
-                        return;
-                    }
-                } catch (error) {
-                    console.error('Error polling for ideas:', error);
-                    break;
-                }
+
+async function pollForIdeas() {
+    const maxAttempts = 30; // 30 seconds timeout
+    let attempts = 0;
+
+    while (attempts < maxAttempts) {
+        try {
+            const response = await fetch('/get_latest_ideas');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
+            const data = await response.json();
             
-            alert('Ideas generation is taking longer than expected. Please try again later.');
+            if (data.message === "No ideas generated yet") {
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before next attempt
+                attempts++;
+            } else {
+                displayIdeas(data);
+                return;
+            }
+        } catch (error) {
+            console.error('Error polling for ideas:', error);
+            break;
         }
+    }
+    
+    alert('Ideas generation is taking longer than expected. Please try again later.');
+}
+
+generateButton.addEventListener('click', generateIdeas);
 
         function displayIdeas(ideas) {
     ideasContainer.innerHTML = '';
@@ -241,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <p><strong>Implementation Steps:</strong></p>
             <ol>
                 ${idea.implementation_steps.map(step => `<li>${step}</li>`).join('')}
-            </ol>
+            </ul>
             <p><strong>Recommended Tech Stack:</strong></p>
             <ul>
                 ${idea.tech_stack.map(tech => `<li><strong>${tech.name}:</strong> ${tech.reason}</li>`).join('')}
@@ -265,7 +379,8 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', copyIdea);
     });
 }
-        async function reserveIdea(event) {
+
+async function reserveIdea(event) {
             const ideaId = event.target.getAttribute('data-id');
             try {
                 const response = await fetch('/reserve_idea', {
