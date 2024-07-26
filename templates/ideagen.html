@@ -105,9 +105,238 @@
         margin-bottom: 0.5rem;
     }
 }
-    </style>
-  </head>
-  <body>
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#chatHistory {
+    height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.chat-message {
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.user-message {
+    background-color: #e6f2ff;
+    text-align: right;
+}
+
+.ai-message {
+    background-color: #f0f0f0;
+}
+
+#chatInput {
+    width: calc(100% - 70px);
+    margin-right: 10px;
+}
+
+#sendChatButton {
+    width: 60px;
+}
+
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-style: italic;
+    color: #888;
+}
+
+.loading::after {
+    content: '...';
+    width: 20px;
+    text-align: left;
+    animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+    0%, 20% {
+        content: '.';
+    }
+    40% {
+        content: '..';
+    }
+    60% {
+        content: '...';
+    }
+    80%, 100% {
+        content: '';
+    }
+}
+
+.chat-message {
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.user-message {
+    background-color: #e6f2ff;
+    text-align: right;
+    margin-left: auto;
+}
+
+.ai-message {
+    background-color: #f0f0f0;
+    text-align: left;
+    margin-right: auto;
+}
+
+.idea-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.primary-actions, .secondary-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    flex: 1;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.reserve-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.chat-btn {
+    background-color: #2196F3;
+    color: white;
+}
+
+.copy-btn {
+    background-color: #FFC107;
+    color: black;
+}
+
+.download-btn {
+    background-color: #9C27B0;
+    color: white;
+}
+
+.social-share {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.share-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.share-btn:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.share-btn:active {
+    transform: translateY(1px);
+}
+
+.share-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.twitter-share svg {
+    color: #1DA1F2;
+}
+
+.whatsapp-share svg {
+    color: #25D366;
+}
+
+.linkedin-share svg {
+    color: #0077B5;
+}
+
+@media (max-width: 768px) {
+    .idea-actions, .primary-actions, .secondary-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .social-share {
+        justify-content: space-around;
+    }
+}
+  </style>
+ </head>
+ <body>
     <nav id="desktop-nav">
       <div class="logo">Om Bhojane</div>
       <div>
@@ -228,6 +457,16 @@
         <div id="ideas-container"></div>
     </div>
 
+    <div id="chatModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Chat with Idea</h2>
+            <div id="chatHistory"></div>
+            <input type="text" id="chatInput" placeholder="Ask a question about this idea...">
+            <button id="sendChatButton">Send</button>
+        </div>
+    </div>
+
     </section>
     <footer>
       <p>Copyright &#169; 2023 Om Bhojane.</p>
@@ -340,7 +579,7 @@ async function pollForIdeas() {
 
 generateButton.addEventListener('click', generateIdeas);
 
-        function displayIdeas(ideas) {
+function displayIdeas(ideas) {
     ideasContainer.innerHTML = '';
     ideas.forEach((idea, index) => {
         const ideaElement = document.createElement('div');
@@ -362,23 +601,71 @@ generateButton.addEventListener('click', generateIdeas);
                 ${idea.tech_stack.map(tech => `<li><strong>${tech.name}:</strong> ${tech.reason}</li>`).join('')}
             </ul>
             <div class="idea-actions">
-                <button class="btn reserve-btn" data-id="${idea.id}">Reserve Idea</button>
-                <button class="btn copy-btn" data-id="${index}">Copy Idea</button>
-                <a href="/download_pdf/${idea.id}" class="btn download-btn" target="_blank">Download PDF</a>
+                <div class="primary-actions">
+                    <button class="btn reserve-btn" data-id="${idea.id}">Reserve Idea</button>
+                    <button class="btn chat-btn" data-id="${index}">Chat with Idea</button>
+                </div>
+                <div class="secondary-actions">
+                    <button class="btn copy-btn" data-id="${index}">Copy Idea</button>
+                    <a href="/download_pdf/${idea.id}" class="btn download-btn" target="_blank">Download PDF</a>
+                </div>
+                <div class="social-share">
+                    <button class="share-btn twitter-share" title="Share on Twitter">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                        </svg>
+                    </button>
+                    <button class="share-btn whatsapp-share" title="Share on WhatsApp">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                        </svg>
+                    </button>
+                    <button class="share-btn linkedin-share" title="Share on LinkedIn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                    </button>
+                </div>
             </div>
         `;
         ideasContainer.appendChild(ideaElement);
+        ideaElement.querySelector('.twitter-share').addEventListener('click', () => shareOnTwitter(idea));
+        ideaElement.querySelector('.whatsapp-share').addEventListener('click', () => shareOnWhatsApp(idea));
+        ideaElement.querySelector('.linkedin-share').addEventListener('click', () => shareOnLinkedIn(idea));
+
     });
 
-    // Add event listeners for reserve buttons
+    // Add event listeners for buttons
     document.querySelectorAll('.reserve-btn').forEach(button => {
         button.addEventListener('click', reserveIdea);
     });
-
-    // Add event listeners for copy buttons
     document.querySelectorAll('.copy-btn').forEach(button => {
         button.addEventListener('click', copyIdea);
     });
+    document.querySelectorAll('.chat-btn').forEach(button => {
+        button.addEventListener('click', openChatModal);
+    });
+}
+
+function shareOnTwitter(idea) {
+    const text = encodeURIComponent(`I found this amazing project idea on IdeaGen: ${idea.title}. Check it out!`);
+    const url = encodeURIComponent('https://omsdev.vercel.app/ideagen');
+    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+}
+
+function shareOnWhatsApp(idea) {
+    const text = encodeURIComponent(`Check out this amazing project idea I found on IdeaGen: ${idea.title}`);
+    const url = encodeURIComponent('https://omsdev.vercel.app/ideagen');
+    window.open(`https://wa.me/?text=${text}%20${url}`, '_blank');
+}
+
+function shareOnLinkedIn(idea) {
+    const url = encodeURIComponent('https://omsdev.vercel.app/ideagen');
+    const title = encodeURIComponent(idea.title);
+    const summary = encodeURIComponent(`Check out this amazing project idea I found on IdeaGen: ${idea.title}`);
+    window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${title}&summary=${summary}`, '_blank');
 }
 
 async function reserveIdea(event) {
@@ -421,5 +708,6 @@ async function reserveIdea(event) {
 }
     });
     </script>
+    <script src="/static/js/ideagen.js"></script>
   </body>
 </html>

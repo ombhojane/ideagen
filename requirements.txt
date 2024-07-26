@@ -2,6 +2,8 @@ fastapi
 uvicorn
 gunicorn
 jinja2
-google-generativeai
+langchain
+langchain_google_genai
+langsmith
 pymongo
 fpdf

@@ -1,3 +1,4 @@
+import re
 from fastapi import FastAPI, HTTPException, Request, BackgroundTasks
 from fastapi.responses import JSONResponse, FileResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
@@ -29,7 +30,7 @@ MONGODB_URI = "mongodb+srv://aminvasudev6:wcw9QsKgW3rUeGA4@waybillcluster.88jnvs
 GOOGLE_API_KEY = "AIzaSyAYadY3_MQI0_RZU7_1ckpo4k2Vm13BIgU"
 
 # Configure Gemini
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0.9)
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0.9, google_api_key="AIzaSyAYadY3_MQI0_RZU7_1ckpo4k2Vm13BIgU")
 
 # Initialize MongoDB client
 client = MongoClient(MONGODB_URI)
@@ -79,6 +80,53 @@ def reserve_idea(idea_id, user_id):
 
 def get_reserved_ideas():
     return list(reserved_ideas_collection.find({}, {"title": 1, "description": 1}))
+
+@app.post("/chat_with_idea")
+async def chat_with_idea(request: Request):
+    data = await request.json()
+    query = data['query']
+    idea = data['idea']
+    context = f"""
+    User parameters:
+    Category: {data['category']}
+    Proficiency: {data['proficiency']}
+    Time frame: {data['time_frame']}
+    Team size: {data['team_size']}
+    Technical skills: {', '.join(data['technical_skills'])}
+    Project goals: {', '.join(data['project_goals'])}
+    Theme: {data['theme']}
+
+    Generated idea:
+    {idea}
+
+    User query: {query}
+
+    Please provide a helpful response to the user's query about the generated idea, taking into account the user's parameters and the idea details. 
+    Format your response as plain text without any special formatting or markdown. 
+    Avoid using asterisks or other symbols for emphasis. 
+    Keep your response concise and to the point.
+    """
+
+    try:
+        response = await generate_ideas_async(context)
+        # Process the response to remove any remaining formatting
+        processed_response = process_response(response)
+        return {"response": processed_response}
+    except Exception as e:
+        print(f"Error in chat_with_idea: {e}")
+        raise HTTPException(status_code=500, detail="Failed to generate response")
+
+def process_response(response):
+    # Remove any asterisks
+    response = response.replace('*', '')
+    # Remove any markdown-style headers
+    response = re.sub(r'#{1,6}\s', '', response)
+    # Remove any other markdown formatting you might encounter
+    # For example, removing bold and italic formatting:
+    response = re.sub(r'\*\*(.*?)\*\*', r'\1', response)
+    response = re.sub(r'_(.*?)_', r'\1', response)
+    # Add more substitutions as needed
+    return response.strip()
 
 def create_pdf(idea):
     pdf = FPDF()
