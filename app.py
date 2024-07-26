@@ -183,6 +183,9 @@ async def generate_ideas_route(idea_request: IdeaRequest, background_tasks: Back
     reserved_ideas = get_reserved_ideas()
     reserved_ideas_prompt = "\n".join([f"- {idea['title']}: {idea['description']}" for idea in reserved_ideas])
 
+    exclude_ideas = idea_request.exclude_ideas if hasattr(idea_request, 'exclude_ideas') else []
+    exclude_ideas_prompt = "\n".join([f"- {title}" for title in exclude_ideas])
+
     prompt = f"""
         As an innovative tech project idea generator for university students, create 3 unique and novel project ideas based on the following parameters:
         Category: {idea_request.category}
@@ -195,6 +198,8 @@ async def generate_ideas_route(idea_request: IdeaRequest, background_tasks: Back
         Focus on creating truly innovative, cutting-edge ideas that push the boundaries of current technology. Consider emerging trends, potential breakthroughs, and interdisciplinary approaches.
         The following ideas have already been reserved and should not be suggested again:
         {reserved_ideas_prompt}
+        Additionally, do not suggest any of these previously generated ideas:
+        {exclude_ideas_prompt}
         For each idea, provide:
         1. Project title (creative and catchy)
         2. Brief description (2-3 sentences, highlighting its uniqueness)
@@ -226,7 +231,6 @@ async def generate_ideas_route(idea_request: IdeaRequest, background_tasks: Back
     background_tasks.add_task(process_and_store_ideas, prompt, idea_request)
     
     return {"message": "Ideas generation started. Please check back in a few moments."}
-
 
 async def process_and_store_ideas(prompt, idea_request):
     try:

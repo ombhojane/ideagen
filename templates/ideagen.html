@@ -453,9 +453,10 @@
             <textarea id="theme" name="theme" rows="4"></textarea>
         </div>
         <button id="generate-ideas" class="btn">Generate Ideas</button>
+        <button id="generate-more" class="btn" style="display: none;">Generate More</button>
         <div id="loading" style="display: none;">Generating ideas... Please wait.</div>
         <div id="ideas-container"></div>
-    </div>
+        </div>
 
     <div id="chatModal" class="modal">
         <div class="modal-content">
@@ -484,6 +485,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const ideasContainer = document.getElementById('ideas-container');
         const loadingElement = document.getElementById('loading');
 
+        let generatedIdeas = [];
+        let isFirstGeneration = true;
+
         categorySelect.addEventListener('change', () => {
             otherCategoryContainer.style.display = categorySelect.value === 'Other' ? 'block' : 'none';
         });
@@ -497,28 +501,28 @@ document.addEventListener('DOMContentLoaded', () => {
         let isGenerating = false;
 
         async function generateIdeas() {
-            if (isGenerating) {
-                alert('Please wait, ideas are still being generated.');
-                return;
-            }
+    if (isGenerating) {
+        alert('Please wait, ideas are still being generated.');
+        return;
+    }
 
-             isGenerating = true;
-            const data = {
-                category: categorySelect.value === 'Other' ? document.getElementById('other-category').value : categorySelect.value,
-                proficiency: document.getElementById('proficiency').value,
-                time_frame: timeFrameSelect.value === 'Custom' ? document.getElementById('custom-time').value : timeFrameSelect.value,
-                team_size: parseInt(document.getElementById('team-size').value),
-                technical_skills: Array.from(document.querySelectorAll('input[name="technical-skills"]:checked')).map(checkbox => checkbox.value),
-                project_goals: [document.querySelector('input[name="project-goals"]:checked').value],
-                theme: document.getElementById('theme').value
-            };
-        
+    isGenerating = true;
+    const data = {
+        category: categorySelect.value === 'Other' ? document.getElementById('other-category').value : categorySelect.value,
+        proficiency: document.getElementById('proficiency').value,
+        time_frame: timeFrameSelect.value === 'Custom' ? document.getElementById('custom-time').value : timeFrameSelect.value,
+        team_size: parseInt(document.getElementById('team-size').value),
+        technical_skills: Array.from(document.querySelectorAll('input[name="technical-skills"]:checked')).map(checkbox => checkbox.value),
+        project_goals: [document.querySelector('input[name="project-goals"]:checked').value],
+        theme: document.getElementById('theme').value,
+        exclude_ideas: isFirstGeneration ? [] : generatedIdeas.map(idea => idea.title)
+    };
 
-           
-
-            try {
+    try {
         loadingElement.style.display = 'block';
-        ideasContainer.innerHTML = '';
+        if (isFirstGeneration) {
+            ideasContainer.innerHTML = '';
+        }
         
         const response = await fetch('/generate_ideas', {
             method: 'POST',
@@ -535,22 +539,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = await response.json();
         console.log(result.message);
         
-        // Wait for ideas to be generated
-        await pollForIdeas();
+        // Wait for ideas to be generated (adjust the timeout as needed)
+        await new Promise(resolve => setTimeout(resolve, 5000));
+
+        // Fetch the generated ideas
+        const ideasResponse = await fetch('/get_latest_ideas');
+        if (!ideasResponse.ok) {
+            throw new Error('Failed to fetch generated ideas');
+        }
+        const ideas = await ideasResponse.json();
+
+        if (ideas.message === "No ideas generated yet") {
+            throw new Error('No ideas generated');
+        }
+
+        generatedIdeas = [...generatedIdeas, ...ideas];
+        displayIdeas(ideas, !isFirstGeneration);
     } catch (error) {
         console.error('Error:', error);
         alert('Failed to generate ideas. Please try again.');
     } finally {
         loadingElement.style.display = 'none';
         isGenerating = false;
+        isFirstGeneration = false;
+        document.getElementById('generate-more').style.display = 'inline-block';
     }
 }
 
-
-
-
 async function pollForIdeas() {
-    const maxAttempts = 30; // 30 seconds timeout
+    const maxAttempts = 30;
     let attempts = 0;
 
     while (attempts < maxAttempts) {
@@ -562,10 +579,11 @@ async function pollForIdeas() {
             const data = await response.json();
             
             if (data.message === "No ideas generated yet") {
-                await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before next attempt
+                await new Promise(resolve => setTimeout(resolve, 1000));
                 attempts++;
             } else {
-                displayIdeas(data);
+                generatedIdeas = [...generatedIdeas, ...data];
+                displayIdeas(data, !isFirstGeneration);
                 return;
             }
         } catch (error) {
@@ -579,8 +597,10 @@ async function pollForIdeas() {
 
 generateButton.addEventListener('click', generateIdeas);
 
-function displayIdeas(ideas) {
-    ideasContainer.innerHTML = '';
+function displayIdeas(ideas, append = false) {
+    if (!append) {
+        ideasContainer.innerHTML = '';
+    }
     ideas.forEach((idea, index) => {
         const ideaElement = document.createElement('div');
         ideaElement.classList.add('idea');
@@ -595,7 +615,7 @@ function displayIdeas(ideas) {
             <p><strong>Implementation Steps:</strong></p>
             <ol>
                 ${idea.implementation_steps.map(step => `<li>${step}</li>`).join('')}
-            </ul>
+            </ol>
             <p><strong>Recommended Tech Stack:</strong></p>
             <ul>
                 ${idea.tech_stack.map(tech => `<li><strong>${tech.name}:</strong> ${tech.reason}</li>`).join('')}
@@ -603,10 +623,10 @@ function displayIdeas(ideas) {
             <div class="idea-actions">
                 <div class="primary-actions">
                     <button class="btn reserve-btn" data-id="${idea.id}">Reserve Idea</button>
-                    <button class="btn chat-btn" data-id="${index}">Chat with Idea</button>
+                    <button class="btn chat-btn" data-id="${generatedIdeas.length - ideas.length + index}">Chat with Idea</button>
                 </div>
                 <div class="secondary-actions">
-                    <button class="btn copy-btn" data-id="${index}">Copy Idea</button>
+                    <button class="btn copy-btn" data-id="${generatedIdeas.length - ideas.length + index}">Copy Idea</button>
                     <a href="/download_pdf/${idea.id}" class="btn download-btn" target="_blank">Download PDF</a>
                 </div>
                 <div class="social-share">
@@ -634,7 +654,6 @@ function displayIdeas(ideas) {
         ideaElement.querySelector('.twitter-share').addEventListener('click', () => shareOnTwitter(idea));
         ideaElement.querySelector('.whatsapp-share').addEventListener('click', () => shareOnWhatsApp(idea));
         ideaElement.querySelector('.linkedin-share').addEventListener('click', () => shareOnLinkedIn(idea));
-
     });
 
     // Add event listeners for buttons
@@ -648,6 +667,8 @@ function displayIdeas(ideas) {
         button.addEventListener('click', openChatModal);
     });
 }
+
+document.getElementById('generate-more').addEventListener('click', generateIdeas);
 
 function shareOnTwitter(idea) {
     const text = encodeURIComponent(`I found this amazing project idea on IdeaGen: ${idea.title}. Check it out!`);
