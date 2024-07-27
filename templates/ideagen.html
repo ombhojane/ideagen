@@ -454,7 +454,7 @@
         </div>
         <button id="generate-ideas" class="btn">Generate Ideas</button>
         <button id="generate-more" class="btn" style="display: none;">Generate More</button>
-        <div id="loading" style="display: none;">Generating ideas... Please wait.</div>
+        <div id="loading" style="display: none;">Generating ideas... This may take up to a minute. Please wait.</div>        
         <div id="ideas-container"></div>
         </div>
 
@@ -539,18 +539,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = await response.json();
         console.log(result.message);
         
-        // Wait for ideas to be generated (adjust the timeout as needed)
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        // Wait for ideas to be generated (60 seconds timeout)
+        let ideas = null;
+        const startTime = Date.now();
+        while (Date.now() - startTime < 60000) {
+            await new Promise(resolve => setTimeout(resolve, 5000)); // Check every 5 seconds
 
-        // Fetch the generated ideas
-        const ideasResponse = await fetch('/get_latest_ideas');
-        if (!ideasResponse.ok) {
-            throw new Error('Failed to fetch generated ideas');
+            const ideasResponse = await fetch('/get_latest_ideas');
+            if (!ideasResponse.ok) {
+                throw new Error('Failed to fetch generated ideas');
+            }
+            const ideasData = await ideasResponse.json();
+
+            if (ideasData.message !== "No ideas generated yet") {
+                ideas = ideasData;
+                break;
+            }
         }
-        const ideas = await ideasResponse.json();
 
-        if (ideas.message === "No ideas generated yet") {
-            throw new Error('No ideas generated');
+        if (!ideas) {
+            throw new Error('Idea generation timed out');
         }
 
         generatedIdeas = [...generatedIdeas, ...ideas];
