@@ -4,25 +4,24 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Om Bhojane</title>
+    <title>Ideagen</title>
     <link rel="stylesheet" href="/static/css/style.css"/>
     <link rel="stylesheet" href="/static/css/mediastyle.css" />
   </head>
   <body>
     <nav id="desktop-nav">
-      <div class="logo">Om Bhojane</div>
+      <div class="logo">Ideagen</div>
       <div>
         <ul class="nav-links">
           <li><a href="#about">About</a></li>
           <li><a href="/ideas">Ideas</a></li>
-          <li><a href="/projects">Projects</a></li>
-          <li><a href="/timeline">Timeline</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#key-features">Features</a></li>
+          <li><a href="/ideagen" style="border: 2px solid #333; border-radius: 50px; padding: 10px 20px;">Try Here!</a></li>
         </ul>
       </div>
     </nav>
     <nav id="hamburger-nav">
-      <div class="logo">Om Bhojane</div>
+      <div class="logo">Ideagen</div>
       <div class="hamburger-menu">
         <div class="hamburger-icon" onclick="toggleMenu()">
           <span></span>
@@ -30,252 +29,267 @@
           <span></span>
         </div>
         <div class="menu-links">
-          <li><a href="#about" onclick="toggleMenu()">About</a></li>
+          <li><a href="#about">About</a></li>
           <li><a href="/ideas">Ideas</a></li>
-          <li><a href="/projects">Projects</a></li>
-          <li><a href="/timeline">Timeline</a></li>
-          <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
+          <li><a href="/ideagen">Try Out Now</a></li>
         </div>
       </div>
     </nav>
-    <section id="profile">
-      <div class="section__pic-container">
-        <img src="/static/assets/omprofile.png" alt="om" />
+    <section id="hero">
+      <div class="hero-content">
+          <h1 class="hero-title">In a world overflowing with information...</h1>
+          <h2 class="hero-subtitle">Finding that one brilliant idea feels impossible.</h2>
       </div>
-      <div class="section__text">
-        <p class="section__text__p1">Hello, I'm</p>
-        <h1 class="title">Om Bhojane</h1>
-        <p class="section__text__p2">AI Developer</p>
-        <div class="btn-container">
-          <button
-            class="btn btn-color-2"
-            onclick="window.open('/static/assets/resume.pdf')"
-          >
-            Resume
-          </button>
-          <button class="btn btn-color-1" onclick="location.href='./#contact'">
-            Contact Info
-          </button>
-        </div>
-        <div id="socials-container">
-          <img
-            src="/static/assets/linkedin.png"
-            alt="My LinkedIn profile"
-            class="icon"
-            onclick="location.href='https://www.linkedin.com/in/om-bhojane/'"
-            target="_blank"
-          />
-          <img
-            src="/static/assets/github.png"
-            alt="My Github profile"
-            class="icon"
-            onclick="location.href='https://github.com/ombhojane'"
-            target="_blank"
-          />
-          <img
-          src="/static/assets/twitter-logo-png-round-6.png"
-          alt="twitter"
-          class="icon"
-          onclick="location.href='https://x.com/ombhojane05'"
-          target="_blank"
-      />
-        </div>
-    </section>
-    <section id="about">
-      <p class="section__text__p1">Get To Know More</p>
-      <h1 class="title">About Me</h1>
-      <div class="section-container">
-        <div class="section__pic-container">
-          <img
-            src="/static/assets/omabout.jpg"
-            alt="Profile picture"
-            class="about-pic"
-          />
-        </div>
-        <div class="about-details-container">
-          <div class="about-containers">
-            <div class="details-container">
-              <img
-                src="/static/assets/experience.png"
-                alt="Experience icon"
-                class="icon"
-              />
-              <h3>Experience</h3>
-              <p>2+ years <br />AI & Web/APP Development </p>
-            </div>
-            <div class="details-container">
-              <img
-                src="/static/assets/education.png"
-                alt="Education icon"
-                class="icon"
-              />
-              <h3>Education</h3>
-              <p>B.E. Computer Engineering<br />Open Source Contribtor</p>
-            </div>
-          </div>
-          <div class="text-container">
-            <p>
-              I am a committed Computer Engineering student with a profound interest in artificial intelligence and full-stack development. My academic and internship experiences have equipped me with robust skills in AI research, machine learning, and web technologies. Passionate about employing technology to address complex challenges, I aim to contribute effectively in innovative and technology-driven environments.
-            </p>
-            
-          </div>
-        </div>
-      </div>
-      
-    </section>
-    <section id="experience">
-      <p class="section__text__p1">Explore Our</p>
-      <h1 class="title">Experience</h1>
-      <div class="experience-details-container">
-        <div class="about-containers">
-          <div class="details-container">
-            <h2 class="experience-sub-title">  Tech Stack</h2>
-            <div class="article-container">
-              <article>
-                <img
-                  src="/static/assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>React/NextJs</h3>
-                  <p>Skilled</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="/static/assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>JavaScript</h3>
-                  <p>Intermediate</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="/static/assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>Vertex AI</h3>
-                  <p>Intermediate</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="/static/assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>TypeScript  </h3>
-                  <p>Experienced</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="/static/assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>Flutter</h3>
-                  <p>Experienced</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="/static/assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>Python & lib</h3>
-                  <p>Skilled</p>
-                </div>
-              </article>
-            </div>
-          </div>
-          <div class="details-container">
-            <h2 class="experience-sub-title">AI technologies</h2>
-            <div class="article-container">
-              <article>
-                <img src="/static/assets/checkmark.png" alt="Experience icon" class="icon" />
-                <div>
-                  <h3>Frameworks</h3>
-                  <p>Proficient</p>
-                </div>
-              </article>
-              <article>
-                <img src="/static/assets/checkmark.png" alt="Experience icon" class="icon" />
-                <div>
-                  <h3>Transformers</h3>
-                  <p>Advanced</p>
-                </div>
-              </article>
-              <article>
-                <img src="/static/assets/checkmark.png" alt="Experience icon" class="icon" />
-                <div>
-                  <h3>Modalities</h3>
-                  <p>Advanced</p>
-                </div>
-              </article>
-              <article>
-                <img src="/static/assets/checkmark.png" alt="Experience icon" class="icon" />
-                <div>
-                  <h3>Algorithms</h3>
-                  <p>Experienced</p>
-                </div>
-              </article>
-              <article>
-                <img src="/static/assets/checkmark.png" alt="Experience icon" class="icon" />
-                <div>
-                  <h3>AI Research</h3>
-                  <p>Skilled</p>
-                </div>
-              </article>
-              <article>
-                <img src="/static/assets/checkmark.png" alt="Experience icon" class="icon" />
-                <div>
-                  <h3>Optimization</h3>
-                  <p>Skilled</p>
-                </div>
-              </article>
+      <div class="sticker top-left">💡</div>
+      <div class="sticker top-right">🚀</div>
+      <div class="sticker bottom-left">🔍</div>
+      <div class="sticker bottom-right">💻</div>
+  </section>
+  
+  <section id="problem-statement">
+      <div class="problem-content-wrapper">
+          <h2 class="problem-title fade-in">The Challenge</h2>
+          <div class="problem-content fade-in">
+              <p class="problem-desc">Every year, thousands of tech students face the same struggle...</p>
               
-            </div>
+              <div class="students-visual">
+                  <div class="student pop-in">
+                      <svg class="student-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                      </svg>
+                      <div class="thought-bubble">
+                          <span class="generic-idea">Generic Idea</span>
+                          <span class="checkmark">✓</span>
+                      </div>
+                  </div>
+                  <div class="student pop-in">
+                      <svg class="student-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                      </svg>
+                      <div class="thought-bubble">
+                          <span class="generic-idea">Generic Idea</span>
+                          <span class="checkmark">✓</span>
+                      </div>
+                  </div>
+                  <div class="student pop-in">
+                      <svg class="student-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                      </svg>
+                      <div class="thought-bubble">
+                          <span class="generic-idea">Generic Idea</span>
+                          <span class="checkmark">✓</span>
+                      </div>
+                  </div>
+              </div>
+              <p class="problem-result fade-in">The result? Repetitive projects. Missed opportunities. Unfulfilled potential.</p>
           </div>
-        </div>
       </div>
-    </section>
+      <div class="problem-image-space">
+       </div>
+  </section>
 
-    <section id="contact">
-      <p class="section__text__p1">Get in Touch</p>
-      <h1 class="title">Contact Me!</h1>
-      <div class="contact-info-upper-container">
-        <div class="contact-info-container">
-          <img
-            src="/static/assets/email.png"
-            alt="Email icon"
-            class="icon contact-icon email-icon"
-          />
-          <p><a href="mailto:examplemail@gmail.com">ombhojane05@gmail.com</a></p>
+  <section id="ideagen-reveal">
+    <div class="reveal-content">
+        <h2 class="reveal-title">Imagine a world where every student has access to unlimited inspiration...</h2>
+        <h3 class="reveal-subtitle">Where AI and human creativity combine to spark innovation.</h3>
+        <h3 class="reveal-subtitle">That world is here.</h3>
+        <h1 class="ideagen-title">Introducing Ideagen</h1>
+        <p class="ideagen-description">Say goodbye to project idea struggles. Ideagen crafts unique, detailed concepts tailored to your needs, going beyond typical search results.</p>
+        <a href="#" class="try-ideagen-btn">Try out Ideagen</a>
+    </div>
+    <div class="sticker top-left">🌟</div>
+    <div class="sticker top-right">🧠</div>
+    <div class="sticker bottom-left">🎨</div>
+    <div class="sticker bottom-right">🤖</div>
+</section>
+
+<section class="ideagen-showcase" id="key-features">
+  <div class="showcase-container">
+    <div class="section-header">
+      <h2 class="section-title">Unleash Your Creativity</h2>
+      <p class="section-description">Discover the powerful features that make Ideagen your ultimate innovation companion</p>
+    </div>
+
+    <div class="features-container">
+      <div class="feature" data-feature="ai-powered">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 18.5L4 16v-6l8 4 8-4v6l-8 4.5zm0-10L4 6l8-4 8 4-8 4z"/>
+        </svg>
+        <h3>AI-Powered Ideation</h3>
+        <p>Get three unique, detailed project ideas tailored to your needs.</p>
+      </div>
+    
+    <div class="feature" data-feature="idea-retention">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+      </svg>
+      <h3>Idea Retention</h3>
+      <p>Claim your idea, ensuring it's exclusively yours.</p>
+    </div>
+    
+    <div class="feature" data-feature="high-accuracy">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+      </svg>
+      <h3>High-Accuracy Responses</h3>
+      <p>No more generic suggestions.</p>
+    </div>
+    
+    <div class="feature" data-feature="customizable">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/>
+      </svg>
+      <h3>Customizable Parameters</h3>
+      <p>Fine-tune your ideas to perfection.</p>
+    </div>
+    
+    <div class="feature" data-feature="easy-sharing">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
+      </svg>
+      <h3>Easy Sharing</h3>
+      <p>From concept to collaboration in seconds.</p>
+    </div>
+  </div>
+  </div>
+</section>
+
+<section id="how-it-works">
+  <div class="container">
+    <div class="headline-container">
+      <h2 class="headline">Can't this be done by ChatGPT?</h2>
+      <p class="tagline">Ideagen is more than just a ChatGPT-like search.</p>
+      <p class="tagline">Rather than generating common, generalized ideas, Ideagen focuses on curating novel concepts.</p>
+      <p class="tagline">It refines your thoughts, makes the most of them, and delivers potential ideas with all the details you need!</p>
+      <p class="tagline">So, let your thoughts flow, and Ideagen will efficiently create an improved version of your ideas!</p>   
+     </div>
+
+     <div class="idea-transformation">
+      <span class="headline">From</span>
+      <img src="/static/assets/hit.jpg" alt="Simple Shit" class="transformation-image">
+      <span class="headline">to</span>
+      <img src="/static/assets/ideahit.jpg" alt="Ideagen is a hit" style="width: 20%;" class=" tsx">
+    </div>
+
+    <div class="how-it-works-container"></div>
+    <div class="ideas-showcase">
+      <h3 class="ideas-headline">Check out interesting ideas already created by people:</h3>
+      <div class="ideas-scroll-container">
+        <div class="ideas-row">
+          <div class="idea">AI-powered personal stylist</div>
+          <div class="idea">Eco-friendly packaging solution</div>
+          <div class="idea">Virtual reality meditation app</div>
+          <div class="idea">Smart home energy optimizer</div>
+          <div class="idea">Augmented reality cooking assistant</div>
+          <div class="idea">AI-powered personal stylist</div>
+          <div class="idea">Eco-friendly packaging solution</div>
+          <div class="idea">Virtual reality meditation app</div>
+          <div class="idea">Smart home energy optimizer</div>
+          <div class="idea">Augmented reality cooking assistant</div>
+          <div class="idea">AI-powered personal stylist</div>
+          <div class="idea">Eco-friendly packaging solution</div>
+          <div class="idea">Virtual reality meditation app</div>
+          <div class="idea">Smart home energy optimizer</div>
+          <div class="idea">Augmented reality cooking assistant</div>
         </div>
-        <div class="contact-info-container">
-          <img
-            src="/static/assets/linkedin.png"
-            alt="LinkedIn icon"
-            class="icon contact-icon"
-          />
-          <p><a href="https://www.linkedin.com/in/om-bhojane/">LinkedIn</a></p>
+        <div class="ideas-row">
+          <div class="idea">Blockchain-based voting system</div>
+          <div class="idea">Personalized learning AI tutor</div>
+          <div class="idea">Sustainable urban farming network</div>
+          <div class="idea">Wearable health monitor for pets</div>
+          <div class="idea">3D-printed custom prosthetics</div>
+          <div class="idea">AI-powered personal stylist</div>
+          <div class="idea">Eco-friendly packaging solution</div>
+          <div class="idea">Virtual reality meditation app</div>
+          <div class="idea">Smart home energy optimizer</div>
+          <div class="idea">Augmented reality cooking assistant</div>
+          <div class="idea">AI-powered personal stylist</div>
+          <div class="idea">Eco-friendly packaging solution</div>
+          <div class="idea">Virtual reality meditation app</div>
+          <div class="idea">Smart home energy optimizer</div>
+          <div class="idea">Augmented reality cooking assistant</div>
+        </div>
+        <div class="ideas-row">
+          <div class="idea">Social media detox app</div>
+          <div class="idea">Autonomous drone delivery service</div>
+          <div class="idea">Virtual reality historical tours</div>
+          <div class="idea">AI-driven financial advisor</div>
+          <div class="idea">Gamified recycling system</div>
+          <div class="idea">AI-powered personal stylist</div>
+          <div class="idea">Eco-friendly packaging solution</div>
+          <div class="idea">Virtual reality meditation app</div>
+          <div class="idea">Smart home energy optimizer</div>
+          <div class="idea">Augmented reality cooking assistant</div>
+          <div class="idea">AI-powered personal stylist</div>
+          <div class="idea">Eco-friendly packaging solution</div>
+          <div class="idea">Virtual reality meditation app</div>
+          <div class="idea">Smart home energy optimizer</div>
+          <div class="idea">Augmented reality cooking assistant</div>
         </div>
       </div>
-    </section>
-    <footer>
-      <p>Copyright &#169; 2024 Om Bhojane.</p>
-    </footer>
+    </div>
+  </div>
+</section>
+
+<section class="ideagen-gallery">
+  <h2 class="gallery-title">Ideagen in Action</h2>
+  <div class="gallery-container">
+    <div class="gallery-item twitter-post">
+      <blockquote class="twitter-tweet">
+        <p lang="en" dir="ltr">Unleash your creativity with our new tool. Pick your tech, skill level, and timeframe - watch as AI sparks innovative project concepts tailored just for you!<br><br>Find your next project idea: <a href="https://t.co/2I4tEonzMH">https://t.co/2I4tEonzMH</a> <a href="https://t.co/AAkKf8kNh3">pic.twitter.com/AAkKf8kNh3</a></p>&mdash; Om Bhojane (@ombhojane05) <a href="https://twitter.com/ombhojane05/status/1812144403382698439?ref_src=twsrc%5Etfw">July 13, 2024</a>
+      </blockquote>
+    </div>
+    <div class="gallery-item image">
+      <img src="/static/assets/omprofile.png" alt="Ideagen achievement">
+      <div class="overlay">
+        <p>Celebrating our latest milestone!</p>
+      </div>
+    </div>
+    
+    <!-- Add more gallery items as needed -->
+  </div>
+</section>
+
+<!-- Twitter widgets script -->
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
     <script src="/static/js/script.js"></script>
+    
+
+    <script>
+      function isElementInViewport(el) {
+    const rect = el.getBoundingClientRect();
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+}
+
+function handleScroll() {
+    const elements = document.querySelectorAll('.fade-in, .pop-in');
+    elements.forEach(el => {
+        if (isElementInViewport(el)) {
+            el.classList.add('active');
+        }
+    });
+}
+
+window.addEventListener('scroll', handleScroll);
+window.addEventListener('load', handleScroll);
+
+// Trigger animation on load for this section
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const revealSection = document.getElementById('ideagen-reveal');
+    const elements = revealSection.querySelectorAll('.reveal-title, .reveal-subtitle, .ideagen-title');
+    
+    elements.forEach((el, index) => {
+        el.style.animationDelay = `${index * 0.5}s`;
+    });
+});
+    </script>
   </body>
 </html>

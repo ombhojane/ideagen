@@ -14,10 +14,14 @@ from fpdf import FPDF
 import os
 import uvicorn
 import asyncio
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
 
+
+app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Allows all origins, modify as needed
@@ -26,7 +30,6 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-genai.configure(api_key="AIzaSyAYadY3_MQI0_RZU7_1ckpo4k2Vm13BIgU")
 
 # Configure static files and templates
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -34,7 +37,9 @@ templates = Jinja2Templates(directory="templates")
 
 # Use environment variables for sensitive information
 MONGODB_URI = "mongodb+srv://aminvasudev6:wcw9QsKgW3rUeGA4@waybillcluster.88jnvsg.mongodb.net/?retryWrites=true&w=majority&appName=waybillCluster"
-GOOGLE_API_KEY = "AIzaSyAYadY3_MQI0_RZU7_1ckpo4k2Vm13BIgU"
+
+# Configure Gemini
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0.9, google_api_key="AIzaSyAYadY3_MQI0_RZU7_1ckpo4k2Vm13BIgU")
 
 # Initialize MongoDB client
 client = MongoClient(MONGODB_URI)
@@ -42,29 +47,15 @@ db = client["idea_generator"]
 ideas_collection = db["ideas"]
 reserved_ideas_collection = db["reserved_ideas"]
 
-def get_generation_config():
-    return {
-        "temperature": 0.9,
-        "top_p": 1,
-        "top_k": 1,
-        "max_output_tokens": 2048,
-    }
-
-def get_safety_settings():
-    return [
-        {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
-        {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
-        {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
-        {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
-    ]
-
 async def generate_ideas_async(prompt):
-    model = genai.GenerativeModel(model_name="gemini-pro",
-                                  generation_config=get_generation_config(),
-                                  safety_settings=get_safety_settings())
-    response = await model.generate_content_async([prompt])
-    return response.text
-
+    prompt_template = PromptTemplate(
+        input_variables=["prompt"],
+        template="{prompt}"
+    )
+    print(prompt_template)
+    chain = LLMChain(llm=llm, prompt=prompt_template)
+    response = chain.run(prompt)
+    return response
 
 
 def store_idea(idea, metadata):

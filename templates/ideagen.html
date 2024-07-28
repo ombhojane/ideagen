@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Idea Generation - Om Bhojane</title>
-    <link rel="stylesheet" href="/static/css/style.css"/>
+    <link rel="stylesheet" href="/static/css/ideastyles.css"/>
     <link rel="stylesheet" href="/static/css/ideagen.css"/>
     <link rel="stylesheet" href="/static/css/mediastyle.css" />
     <style>
@@ -335,51 +335,49 @@
     }
 }
   </style>
+
  </head>
  <body>
     <nav id="desktop-nav">
-      <div class="logo">Om Bhojane</div>
-      <div>
-        <ul class="nav-links">
-          <li><a href="/#about  ">About</a></li>
-          <li><a href="/ideas">Ideas</a></li>
-          <li><a href="/projects">Projects</a></li>
-          <li><a href="/timeline">Timeline</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </div>
-    </nav>
-    <nav id="hamburger-nav">
-      <div class="logo">Om Bhojane</div>
-      <div class="hamburger-menu">
-        <div class="hamburger-icon" onclick="toggleMenu()">
-          <span></span>
-          <span></span>
-          <span></span>
+        <div class="logo">Ideagen</div>
+        <div>
+          <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="/ideas">Ideas</a></li>
+            <li><a href="#key-features">Features</a></li>
+            <li><a href="/ideagen" style="border: 2px solid #333; border-radius: 50px; padding: 10px 20px;">Try Here!</a></li>
+          </ul>
         </div>
-        <div class="menu-links">
-          <li><a href="/#about" onclick="toggleMenu()">About</a></li>
-          <li><a href="/ideas">Ideas</a></li>
-          <li><a href="/projects">Projects</a></li>
-          <li><a href="/timeline">Timeline</a></li>
-          <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
+      </nav>
+      <nav id="hamburger-nav">
+        <div class="logo">Ideagen</div>
+        <div class="hamburger-menu">
+          <div class="hamburger-icon" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="menu-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="/ideas">Ideas</a></li>
+            <li><a href="#key-features">Features</a></li>
+            <li><a href="/ideagen" style="border: 2px solid #333; border-radius: 50px; padding: 10px 20px;">Try Here!</a></li>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+    <section>
+        <div style="max-width: 600px; margin: 20px auto; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9; text-align: center;">
+            <p style="margin-bottom: 15px; font-size: 16px; color: #333;">We're facing resource limitations. To use IdeaGen efficiently, please tap here:</p>
+            <a href="https://omsdev.vercel.app/ideagen" style="display: inline-block; padding: 10px 20px; background-color: #23c089; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; transition: background-color 0.3s ease;">Try IdeaGen Prototype</a>
+          </div>
+            </section>
+
     <section id="idea-generation">
       <h1 class="title" style="padding-bottom: 10px;">Turn Thoughts into Ideas</h1>
 
-    <p style="max-width: 1000px; font-size: large;">IdeaGen is an innovative tool designed to help you transform your thoughts into concrete project ideas. Whether you're a student, developer, or entrepreneur, IdeaGen assists you in generating unique and tailored project concepts.</p>
-    <div class="new-features" style="border: 1px solid black; border-radius: 10px;"></div>
-      <p>What's new:</p>
-      <ul class="ul">
-        <li>Idea Retention: Now you can reserve the idea, which will not recommended to others </li>
-        <li>Increased Accuracy</li>
-        <li>More relevant parameters added for best idea generation</li>
-        <li>Copy or Save Idea as PDF</li>
-      </ul>
-    </div>
-              
+    
+
       <div class="container">
         <div class="form-container">
             <div class="form-column">
@@ -449,12 +447,12 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="theme">Any specific theme, problem statement, or ideas in mind? (Optional)</label>
+            <label for="theme">Any specific theme, problem statement, or ideas in mind? (Required)</label>
             <textarea id="theme" name="theme" rows="4"></textarea>
         </div>
         <button id="generate-ideas" class="btn">Generate Ideas</button>
+        <div id="loading" style="display: none;">Generating ideas... Please wait.</div>
         <button id="generate-more" class="btn" style="display: none;">Generate More</button>
-        <div id="loading" style="display: none;">Generating ideas... This may take up to a minute. Please wait.</div>        
         <div id="ideas-container"></div>
         </div>
 
@@ -539,26 +537,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = await response.json();
         console.log(result.message);
         
-        // Wait for ideas to be generated (60 seconds timeout)
-        let ideas = null;
-        const startTime = Date.now();
-        while (Date.now() - startTime < 60000) {
-            await new Promise(resolve => setTimeout(resolve, 5000)); // Check every 5 seconds
+        // Wait for ideas to be generated (adjust the timeout as needed)
+        await new Promise(resolve => setTimeout(resolve, 5000));
 
-            const ideasResponse = await fetch('/get_latest_ideas');
-            if (!ideasResponse.ok) {
-                throw new Error('Failed to fetch generated ideas');
-            }
-            const ideasData = await ideasResponse.json();
-
-            if (ideasData.message !== "No ideas generated yet") {
-                ideas = ideasData;
-                break;
-            }
+        // Fetch the generated ideas
+        const ideasResponse = await fetch('/get_latest_ideas');
+        if (!ideasResponse.ok) {
+            throw new Error('Failed to fetch generated ideas');
         }
+        const ideas = await ideasResponse.json();
 
-        if (!ideas) {
-            throw new Error('Idea generation timed out');
+        if (ideas.message === "No ideas generated yet") {
+            throw new Error('No ideas generated');
         }
 
         generatedIdeas = [...generatedIdeas, ...ideas];
