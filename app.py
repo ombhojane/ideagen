@@ -36,10 +36,10 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 # Use environment variables for sensitive information
-MONGODB_URI = "mongodb+srv://aminvasudev6:wcw9QsKgW3rUeGA4@waybillcluster.88jnvsg.mongodb.net/?retryWrites=true&w=majority&appName=waybillCluster"
-
+MONGODB_URI = os.environ.get("MONGODB_URI")
+GoogleApiKey = os.environ.get("GOOGLE_API_KEY")
 # Configure Gemini
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0.9, google_api_key="AIzaSyAYadY3_MQI0_RZU7_1ckpo4k2Vm13BIgU")
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0.9, google_api_key=GoogleApiKey)
 
 # Initialize MongoDB client
 client = MongoClient(MONGODB_URI)

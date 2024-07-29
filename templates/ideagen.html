@@ -342,9 +342,8 @@
         <div class="logo">Ideagen</div>
         <div>
           <ul class="nav-links">
-            <li><a href="#about">About</a></li>
+            <li><a href="/">About</a></li>
             <li><a href="/ideas">Ideas</a></li>
-            <li><a href="#key-features">Features</a></li>
             <li><a href="/ideagen" style="border: 2px solid #333; border-radius: 50px; padding: 10px 20px;">Try Here!</a></li>
           </ul>
         </div>
@@ -358,9 +357,8 @@
             <span></span>
           </div>
           <div class="menu-links">
-            <li><a href="#about">About</a></li>
+            <li><a href="#/">About</a></li>
             <li><a href="/ideas">Ideas</a></li>
-            <li><a href="#key-features">Features</a></li>
             <li><a href="/ideagen" style="border: 2px solid #333; border-radius: 50px; padding: 10px 20px;">Try Here!</a></li>
           </div>
         </div>
@@ -565,7 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
 async function pollForIdeas() {
-    const maxAttempts = 30;
+    const maxAttempts = 60;
     let attempts = 0;
 
     while (attempts < maxAttempts) {
