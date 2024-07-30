@@ -536,7 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(result.message);
         
         // Wait for ideas to be generated (adjust the timeout as needed)
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        await new Promise(resolve => setTimeout(resolve, 300000));
 
         // Fetch the generated ideas
         const ideasResponse = await fetch('/get_latest_ideas');
@@ -552,9 +552,15 @@ document.addEventListener('DOMContentLoaded', () => {
         generatedIdeas = [...generatedIdeas, ...ideas];
         displayIdeas(ideas, !isFirstGeneration);
     } catch (error) {
-        console.error('Error:', error);
-        alert('Failed to generate ideas. Please try again.');
-    } finally {
+    console.error('Error details:', error);
+    if (error.response) {
+        console.error('Response status:', error.response.status);
+        console.error('Response text:', await error.response.text());
+    }
+    alert('Failed to generate ideas. Please try again.');
+}
+
+finally {
         loadingElement.style.display = 'none';
         isGenerating = false;
         isFirstGeneration = false;
@@ -563,7 +569,7 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
 async function pollForIdeas() {
-    const maxAttempts = 60;
+    const maxAttempts = 100;
     let attempts = 0;
 
     while (attempts < maxAttempts) {
@@ -575,7 +581,7 @@ async function pollForIdeas() {
             const data = await response.json();
             
             if (data.message === "No ideas generated yet") {
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                await new Promise(resolve => setTimeout(resolve, 10000));
                 attempts++;
             } else {
                 generatedIdeas = [...generatedIdeas, ...data];
