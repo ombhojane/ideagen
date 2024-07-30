@@ -206,6 +206,14 @@
     }
 }
 
+#generate-more {
+        margin-bottom: 10px; /* Add some space below the button */
+    }
+
+    #loading {
+        margin-top: 10px; /* Add some space above the loading message */
+    }
+
 .chat-message {
     margin-bottom: 15px;
     padding: 10px 15px;
@@ -405,7 +413,7 @@
                       <label><input type="checkbox" name="technical-skills" value="Data Analysis"> Data Analysis</label>
                       <label><input type="checkbox" name="technical-skills" value="Web Development"> Web Development</label>
                       <label><input type="checkbox" name="technical-skills" value="Mobile Development"> Mobile Development</label>
-                      <label><input type="checkbox" name="technical-skills" value="Other"> Other</label>
+                      <label><input type="checkbox" name="technical-skills" value="Blockchain"> Blockchain</label>
                   </div>
               </div>
             </div>
@@ -427,27 +435,30 @@
                     <label for="team-size">Team Size</label>
                     <input type="number" id="team-size" name="team-size" min="1" max="10" value="1">
                 </div>
-                <div class="form-group">
-                  <label>Project Goals (Select one)</label>
-                  <div class="radio-group">
-                      <label><input type="radio" name="project-goals" value="Learning"> Learning</label>
-                      <label><input type="radio" name="project-goals" value="Commercial Potential"> Commercial Potential</label>
-                      <label><input type="radio" name="project-goals" value="Social Impact"> Social Impact</label>
-                      <label><input type="radio" name="project-goals" value="Research"> Research</label>
-                      <label><input type="radio" name="project-goals" value="Other"> Other</label>
-                  </div>
-              </div>
+               <div class="form-group">
+    <label>Project Goals (Select all that apply)</label>
+    <div class="checkbox-group">
+        <label><input type="checkbox" name="project-goals" value="Learning"> Learning</label>
+        <label><input type="checkbox" name="project-goals" value="Commercial Potential"> Commercial Potential</label>
+        <label><input type="checkbox" name="project-goals" value="Social Impact"> Social Impact</label>
+        <label><input type="checkbox" name="project-goals" value="Research"> Research</label>
+        <label><input type="checkbox" name="project-goals" value="Open Source"> Open Source</label>
+        <label><input type="checkbox" name="project-goals" value="Fun Project"> Fun Project</label>
+    </div>
+</div>
             </div>
         </div>
         <div class="form-group">
             <label for="theme">Any specific theme, problem statement, or ideas in mind? (Required)</label>
             <textarea id="theme" name="theme" rows="4"></textarea>
         </div>
+
         <button id="generate-ideas" class="btn">Generate Ideas</button>
-        <div id="loading" style="display: none;">Generating ideas... Please wait.</div>
         <div id="ideas-container"></div>
         <button id="generate-more" class="btn" style="display: none;">Generate More</button>
-        </div>
+        <div id="loading" style="display: none;">Generating ideas... Please wait.</div>
+    
+    </div>
 
     <div id="chatModal" class="modal">
         <div class="modal-content">
@@ -474,6 +485,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const generateButton = document.getElementById('generate-ideas');
     const ideasContainer = document.getElementById('ideas-container');
     const loadingElement = document.getElementById('loading');
+    const generateMoreButton = document.getElementById('generate-more');
+
 
     let generatedIdeas = [];
 
@@ -485,7 +498,13 @@ document.addEventListener('DOMContentLoaded', () => {
         customTimeContainer.style.display = timeFrameSelect.value === 'Custom' ? 'block' : 'none';
     });
 
-    generateButton.addEventListener('click', generateIdeas);
+    generateButton.addEventListener('click', () => {
+    generateIdeas();
+    generateMoreButton.style.display = 'none'; // Hide initially
+});
+
+    let ideaCount = 0;
+
 
     async function generateIdeas() {
         const data = {
@@ -494,50 +513,50 @@ document.addEventListener('DOMContentLoaded', () => {
             time_frame: timeFrameSelect.value === 'Custom' ? document.getElementById('custom-time').value : timeFrameSelect.value,
             team_size: parseInt(document.getElementById('team-size').value),
             technical_skills: Array.from(document.querySelectorAll('input[name="technical-skills"]:checked')).map(checkbox => checkbox.value),
-            project_goals: [document.querySelector('input[name="project-goals"]:checked').value],
+            project_goals: Array.from(document.querySelectorAll('input[name="project-goals"]:checked')).map(checkbox => checkbox.value),
             theme: document.getElementById('theme').value
         };
 
         try {
-            loadingElement.style.display = 'block';
-            ideasContainer.innerHTML = '';
-            
-            const response = await fetch('/generate_ideas', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
+        loadingElement.style.display = 'block';
+        generateMoreButton.style.display = 'none';  
+        
+        const response = await fetch('/generate_ideas', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
 
-            console.log(response);
-            
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            
-            const ideas = await response.json();
-            generatedIdeas = ideas;
-            displayIdeas(ideas);
-            document.getElementById('generate-more').style.display = 'inline-block';
-
-        } catch (error) {
-            console.error('Error details:', error);
-            alert('Failed to generate ideas. Please try again.');
-        } finally {
-            loadingElement.style.display = 'none';
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
+        
+        const ideas = await response.json();
+        generatedIdeas = generatedIdeas.concat(ideas); // Concatenate new ideas to existing ones
+        displayIdeas(ideas, true); // Pass true to append ideas
+        document.getElementById('generate-more').style.display = 'inline-block';
+
+    } catch (error) {
+        console.error('Error details:', error);
+        alert('Failed to generate ideas. Please try again.');
+    } finally {
+        loadingElement.style.display = 'none';
+        generateMoreButton.style.display = 'inline-block';  
     }
+}
 
     function displayIdeas(ideas, append = false) {
     if (!append) {
         ideasContainer.innerHTML = '';
     }
-    ideas.forEach((idea, index) => {
+    ideas.forEach((idea) => {
+        ideaCount++;
         const ideaElement = document.createElement('div');
         ideaElement.classList.add('idea');
         ideaElement.innerHTML = `
-            <h3>${idea.title}</h3>
+            <h3>Idea ${ideaCount}: ${idea.title}</h3>
             <p><strong>Description:</strong> ${idea.description}</p>
             <p><strong>Key Features:</strong></p>
             <ul>
@@ -555,10 +574,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="idea-actions">
                 <div class="primary-actions">
                     <button class="btn reserve-btn" data-id="${idea.id}">Reserve Idea</button>
-                    <button class="btn chat-btn" data-id="${generatedIdeas.length - ideas.length + index}">Chat with Idea</button>
+                    <button class="btn chat-btn" data-id="${generatedIdeas.length - 1}">Chat with Idea</button>                
                 </div>
                 <div class="secondary-actions">
-                    <button class="btn copy-btn" data-id="${generatedIdeas.length - ideas.length + index}">Copy Idea</button>
+                    <button class="btn copy-btn" data-id="${generatedIdeas.length - 1}">Copy Idea</button>
                     <a href="/download_pdf/${idea.id}" class="btn download-btn" target="_blank">Download PDF</a>
                 </div>
                 <div class="social-share">
@@ -600,7 +619,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 }
 
-document.getElementById('generate-more').addEventListener('click', generateIdeas);
+generateMoreButton.addEventListener('click', generateIdeas);
 
 function shareOnTwitter(idea) {
     const text = encodeURIComponent(`I found this amazing project idea on IdeaGen: ${idea.title}. Check it out!`);
@@ -649,16 +668,16 @@ function shareOnLinkedIn(idea) {
     }
 
     function copyIdea(event) {
-        const index = event.target.getAttribute('data-id');
-        const idea = ideasContainer.querySelectorAll('.idea')[index];
-        const ideaText = idea.innerText;
-        
-        navigator.clipboard.writeText(ideaText).then(() => {
-            alert('Idea copied to clipboard!');
-        }).catch(err => {
-            console.error('Failed to copy text: ', err);
-        });
-    }
+    const index = parseInt(event.target.getAttribute('data-id'));
+    const idea = generatedIdeas[index];
+    const ideaText = JSON.stringify(idea, null, 2); // Convert idea object to formatted string
+    
+    navigator.clipboard.writeText(ideaText).then(() => {
+        alert('Idea copied to clipboard!');
+    }).catch(err => {
+        console.error('Failed to copy text: ', err);
+    });
+}
 });
     </script>
     <script src="/static/js/ideagen.js"></script>

@@ -5,7 +5,6 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import List, Optional
-import google.generativeai as genai
 from pymongo import MongoClient
 from bson import ObjectId
 import json
@@ -14,11 +13,7 @@ from fpdf import FPDF
 import os
 import uvicorn
 import asyncio
-import vertexai
-from vertexai.generative_models import GenerativeModel, GenerationConfig
-from vertexai.preview.generative_models import HarmCategory, HarmBlockThreshold
 from fastapi.middleware.cors import CORSMiddleware
-from google.cloud import aiplatform
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
@@ -28,30 +23,6 @@ from langchain.chains import LLMChain
 
 app = FastAPI()
 
-def setup_google_auth():
-    # Get the directory of the current script
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    
-    # Construct the path to your JSON file
-    credentials_path = os.path.join(current_dir, 'ideagen-429919-daf4a7d99ffc.json')
-    print(f"Credentials path: {credentials_path}")
-    
-    # Check if the file exists
-    if not os.path.exists(credentials_path):
-        raise FileNotFoundError(f"Credentials file not found at {credentials_path}")
-    
-    # Set the environment variable
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
-    
-    try:
-        # Initialize Vertex AI
-        aiplatform.init(project="ideagen-429919", location="asia-south1")
-        print("Google Cloud authentication successful")
-    except Exception as e:
-        print(f"Error initializing Google Cloud: {e}")
-
-
-setup_google_auth()
 
 app.add_middleware(
     CORSMiddleware,
@@ -61,7 +32,6 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-vertexai.init(project="ideagen-429919", location="asia-south1")
 
 # Configure static files and templates
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -69,23 +39,6 @@ templates = Jinja2Templates(directory="templates")
 
 # Use environment variables for sensitive information
 MONGODB_URI = "mongodb+srv://aminvasudev6:wcw9QsKgW3rUeGA4@waybillcluster.88jnvsg.mongodb.net/?retryWrites=true&w=majority&appName=waybillCluster"
-vertexai.init(project="ideagen-429919", location="asia-south1")
-
-model = GenerativeModel("gemini-1.5-pro-001")
-
-# Define generation config and safety settings
-generation_config = GenerationConfig(
-    max_output_tokens=8192,
-    temperature=1.6,
-    top_p=0.95,
-)
-
-safety_settings = {
-    HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-}
 
 
 # Initialize MongoDB client

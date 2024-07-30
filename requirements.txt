@@ -7,8 +7,3 @@ langchain_google_genai
 langsmith
 pymongo
 fpdf
-google-cloud-core
-google-cloud-aiplatform
-google-api-core
-google-ai-generativelanguage
-google-generativeai
