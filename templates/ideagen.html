@@ -364,12 +364,7 @@
         </div>
       </nav>
 
-    <section>
-        <div style="max-width: 600px; margin: 20px auto; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9; text-align: center;">
-            <p style="margin-bottom: 15px; font-size: 16px; color: #333;">We're facing resource limitations. To use IdeaGen efficiently, please tap here:</p>
-            <a href="https://omsdev.vercel.app/ideagen" style="display: inline-block; padding: 10px 20px; background-color: #23c089; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; transition: background-color 0.3s ease;">Try IdeaGen Prototype</a>
-          </div>
-            </section>
+    
 
     <section id="idea-generation">
       <h1 class="title" style="padding-bottom: 10px;">Turn Thoughts into Ideas</h1>
@@ -450,8 +445,8 @@
         </div>
         <button id="generate-ideas" class="btn">Generate Ideas</button>
         <div id="loading" style="display: none;">Generating ideas... Please wait.</div>
-        <button id="generate-more" class="btn" style="display: none;">Generate More</button>
         <div id="ideas-container"></div>
+        <button id="generate-more" class="btn" style="display: none;">Generate More</button>
         </div>
 
     <div id="chatModal" class="modal">
@@ -471,135 +466,70 @@
     <script src="/static/js/script.js"></script>
 
     <script>
-
 document.addEventListener('DOMContentLoaded', () => {
-        const categorySelect = document.getElementById('category');
-        const otherCategoryContainer = document.getElementById('other-category-container');
-        const timeFrameSelect = document.getElementById('time-frame');
-        const customTimeContainer = document.getElementById('custom-time-container');
-        const generateButton = document.getElementById('generate-ideas');
-        const ideasContainer = document.getElementById('ideas-container');
-        const loadingElement = document.getElementById('loading');
+    const categorySelect = document.getElementById('category');
+    const otherCategoryContainer = document.getElementById('other-category-container');
+    const timeFrameSelect = document.getElementById('time-frame');
+    const customTimeContainer = document.getElementById('custom-time-container');
+    const generateButton = document.getElementById('generate-ideas');
+    const ideasContainer = document.getElementById('ideas-container');
+    const loadingElement = document.getElementById('loading');
 
-        let generatedIdeas = [];
-        let isFirstGeneration = true;
+    let generatedIdeas = [];
 
-        categorySelect.addEventListener('change', () => {
-            otherCategoryContainer.style.display = categorySelect.value === 'Other' ? 'block' : 'none';
-        });
+    categorySelect.addEventListener('change', () => {
+        otherCategoryContainer.style.display = categorySelect.value === 'Other' ? 'block' : 'none';
+    });
 
-        timeFrameSelect.addEventListener('change', () => {
-            customTimeContainer.style.display = timeFrameSelect.value === 'Custom' ? 'block' : 'none';
-        });
+    timeFrameSelect.addEventListener('change', () => {
+        customTimeContainer.style.display = timeFrameSelect.value === 'Custom' ? 'block' : 'none';
+    });
 
-        generateButton.addEventListener('click', generateIdeas);
+    generateButton.addEventListener('click', generateIdeas);
 
-        let isGenerating = false;
+    async function generateIdeas() {
+        const data = {
+            category: categorySelect.value === 'Other' ? document.getElementById('other-category').value : categorySelect.value,
+            proficiency: document.getElementById('proficiency').value,
+            time_frame: timeFrameSelect.value === 'Custom' ? document.getElementById('custom-time').value : timeFrameSelect.value,
+            team_size: parseInt(document.getElementById('team-size').value),
+            technical_skills: Array.from(document.querySelectorAll('input[name="technical-skills"]:checked')).map(checkbox => checkbox.value),
+            project_goals: [document.querySelector('input[name="project-goals"]:checked').value],
+            theme: document.getElementById('theme').value
+        };
 
-        async function generateIdeas() {
-    if (isGenerating) {
-        alert('Please wait, ideas are still being generated.');
-        return;
-    }
-
-    isGenerating = true;
-    const data = {
-        category: categorySelect.value === 'Other' ? document.getElementById('other-category').value : categorySelect.value,
-        proficiency: document.getElementById('proficiency').value,
-        time_frame: timeFrameSelect.value === 'Custom' ? document.getElementById('custom-time').value : timeFrameSelect.value,
-        team_size: parseInt(document.getElementById('team-size').value),
-        technical_skills: Array.from(document.querySelectorAll('input[name="technical-skills"]:checked')).map(checkbox => checkbox.value),
-        project_goals: [document.querySelector('input[name="project-goals"]:checked').value],
-        theme: document.getElementById('theme').value,
-        exclude_ideas: isFirstGeneration ? [] : generatedIdeas.map(idea => idea.title)
-    };
-
-    try {
-        loadingElement.style.display = 'block';
-        if (isFirstGeneration) {
-            ideasContainer.innerHTML = '';
-        }
-        
-        const response = await fetch('/generate_ideas', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-        
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        
-        const result = await response.json();
-        console.log(result.message);
-        
-        // Wait for ideas to be generated (adjust the timeout as needed)
-        await new Promise(resolve => setTimeout(resolve, 300000));
-
-        // Fetch the generated ideas
-        const ideasResponse = await fetch('/get_latest_ideas');
-        if (!ideasResponse.ok) {
-            throw new Error('Failed to fetch generated ideas');
-        }
-        const ideas = await ideasResponse.json();
-
-        if (ideas.message === "No ideas generated yet") {
-            throw new Error('No ideas generated');
-        }
-
-        generatedIdeas = [...generatedIdeas, ...ideas];
-        displayIdeas(ideas, !isFirstGeneration);
-    } catch (error) {
-    console.error('Error details:', error);
-    if (error.response) {
-        console.error('Response status:', error.response.status);
-        console.error('Response text:', await error.response.text());
-    }
-    alert('Failed to generate ideas. Please try again.');
-}
-
-finally {
-        loadingElement.style.display = 'none';
-        isGenerating = false;
-        isFirstGeneration = false;
-        document.getElementById('generate-more').style.display = 'inline-block';
-    }
-}
-
-async function pollForIdeas() {
-    const maxAttempts = 100;
-    let attempts = 0;
-
-    while (attempts < maxAttempts) {
         try {
-            const response = await fetch('/get_latest_ideas');
+            loadingElement.style.display = 'block';
+            ideasContainer.innerHTML = '';
+            
+            const response = await fetch('/generate_ideas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            console.log(response);
+            
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            const data = await response.json();
             
-            if (data.message === "No ideas generated yet") {
-                await new Promise(resolve => setTimeout(resolve, 10000));
-                attempts++;
-            } else {
-                generatedIdeas = [...generatedIdeas, ...data];
-                displayIdeas(data, !isFirstGeneration);
-                return;
-            }
+            const ideas = await response.json();
+            generatedIdeas = ideas;
+            displayIdeas(ideas);
+            document.getElementById('generate-more').style.display = 'inline-block';
+
         } catch (error) {
-            console.error('Error polling for ideas:', error);
-            break;
+            console.error('Error details:', error);
+            alert('Failed to generate ideas. Please try again.');
+        } finally {
+            loadingElement.style.display = 'none';
         }
     }
-    
-    alert('Ideas generation is taking longer than expected. Please try again later.');
-}
 
-generateButton.addEventListener('click', generateIdeas);
-
-function displayIdeas(ideas, append = false) {
+    function displayIdeas(ideas, append = false) {
     if (!append) {
         ideasContainer.innerHTML = '';
     }
@@ -691,45 +621,45 @@ function shareOnLinkedIn(idea) {
     window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${title}&summary=${summary}`, '_blank');
 }
 
-async function reserveIdea(event) {
-            const ideaId = event.target.getAttribute('data-id');
-            try {
-                const response = await fetch('/reserve_idea', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ idea_id: ideaId }),
-                });
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                if (data.success) {
-                    alert('Idea reserved successfully!');
-                    event.target.disabled = true;
-                    event.target.textContent = 'Reserved';
-                } else {
-                    alert('Failed to reserve idea. Please try again.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
+    async function reserveIdea(event) {
+        const ideaId = event.target.getAttribute('data-id');
+        try {
+            const response = await fetch('/reserve_idea', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ idea_id: ideaId }),
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            if (data.success) {
+                alert('Idea reserved successfully!');
+                event.target.disabled = true;
+                event.target.textContent = 'Reserved';
+            } else {
                 alert('Failed to reserve idea. Please try again.');
             }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to reserve idea. Please try again.');
         }
+    }
 
-        function copyIdea(event) {
-    const index = event.target.getAttribute('data-id');
-    const idea = ideasContainer.querySelectorAll('.idea')[index];
-    const ideaText = idea.innerText;
-    
-    navigator.clipboard.writeText(ideaText).then(() => {
-        alert('Idea copied to clipboard!');
-    }).catch(err => {
-        console.error('Failed to copy text: ', err);
-    });
-}
-    });
+    function copyIdea(event) {
+        const index = event.target.getAttribute('data-id');
+        const idea = ideasContainer.querySelectorAll('.idea')[index];
+        const ideaText = idea.innerText;
+        
+        navigator.clipboard.writeText(ideaText).then(() => {
+            alert('Idea copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
+    }
+});
     </script>
     <script src="/static/js/ideagen.js"></script>
   </body>

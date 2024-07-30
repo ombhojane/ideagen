@@ -19,6 +19,10 @@ from vertexai.generative_models import GenerativeModel, GenerationConfig
 from vertexai.preview.generative_models import HarmCategory, HarmBlockThreshold
 from fastapi.middleware.cors import CORSMiddleware
 from google.cloud import aiplatform
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
+
 
 
 
@@ -30,6 +34,7 @@ def setup_google_auth():
     
     # Construct the path to your JSON file
     credentials_path = os.path.join(current_dir, 'ideagen-429919-daf4a7d99ffc.json')
+    print(f"Credentials path: {credentials_path}")
     
     # Check if the file exists
     if not os.path.exists(credentials_path):
@@ -45,6 +50,7 @@ def setup_google_auth():
     except Exception as e:
         print(f"Error initializing Google Cloud: {e}")
 
+
 setup_google_auth()
 
 app.add_middleware(
@@ -55,6 +61,7 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+vertexai.init(project="ideagen-429919", location="asia-south1")
 
 # Configure static files and templates
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -87,15 +94,17 @@ db = client["idea_generator"]
 ideas_collection = db["ideas"]
 reserved_ideas_collection = db["reserved_ideas"]
 
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0.9, google_api_key="AIzaSyAYadY3_MQI0_RZU7_1ckpo4k2Vm13BIgU")
 
-async def generate_ideas_async(prompt):
-    response = model.generate_content(
-        prompt,
-        generation_config=generation_config,
-        safety_settings=safety_settings,
-        stream=False
+def generate_ideas(prompt):
+    prompt_template = PromptTemplate(
+        input_variables=["prompt"],
+        template="{prompt}"
     )
-    return response.text
+    print(prompt_template)
+    chain = LLMChain(llm=llm, prompt=prompt_template)
+    response = chain.run(prompt)
+    return response
 
 
 def store_idea(idea, metadata):
@@ -130,36 +139,45 @@ def reserve_idea(idea_id, user_id):
 def get_reserved_ideas():
     return list(reserved_ideas_collection.find({}, {"title": 1, "description": 1}))
 
+class ChatRequest(BaseModel):
+    query: str
+    idea: str
+    category: str
+    proficiency: str
+    time_frame: str
+    team_size: int
+    technical_skills: List[str]
+    project_goals: List[str]
+    theme: Optional[str] = None
+
+
 @app.post("/chat_with_idea")
-async def chat_with_idea(request: Request):
-    data = await request.json()
-    query = data['query']
-    idea = data['idea']
-    context = f"""
-    User parameters:
-    Category: {data['category']}
-    Proficiency: {data['proficiency']}
-    Time frame: {data['time_frame']}
-    Team size: {data['team_size']}
-    Technical skills: {', '.join(data['technical_skills'])}
-    Project goals: {', '.join(data['project_goals'])}
-    Theme: {data['theme']}
-
-    Generated idea:
-    {idea}
-
-    User query: {query}
-
-    Please provide a helpful response to the user's query about the generated idea, taking into account the user's parameters and the idea details. 
-    Format your response as plain text without any special formatting or markdown. 
-    Avoid using asterisks or other symbols for emphasis. 
-    Keep your response concise and to the point.
-    """
-
+def chat_with_idea(chat_request: ChatRequest):
     try:
-        response = await generate_ideas_async(context)
-        # Process the response to remove any remaining formatting
+        context = f"""
+        User parameters:
+        Category: {chat_request.category}
+        Proficiency: {chat_request.proficiency}
+        Time frame: {chat_request.time_frame}
+        Team size: {chat_request.team_size}
+        Technical skills: {', '.join(chat_request.technical_skills)}
+        Project goals: {', '.join(chat_request.project_goals)}
+        Theme: {chat_request.theme}
+
+        Generated idea:
+        {chat_request.idea}
+
+        User query: {chat_request.query}
+
+        Please provide a helpful response to the user's query about the generated idea, taking into account the user's parameters and the idea details. 
+        Format your response as plain text without any special formatting or markdown. 
+        Avoid using asterisks or other symbols for emphasis. 
+        Keep your response concise and to the point.
+        """
+
+        response = generate_ideas(context)
         processed_response = process_response(response)
+
         return {"response": processed_response}
     except Exception as e:
         print(f"Error in chat_with_idea: {e}")
@@ -204,37 +222,38 @@ class ReserveIdeaRequest(BaseModel):
     idea_id: str
 
 @app.get("/")
-async def home(request: Request):
+def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request, "name": "World"})
 
 @app.get("/ideas")
-async def ideas(request: Request):
+def ideas(request: Request):
     return templates.TemplateResponse("ideas.html", {"request": request})
 
 @app.get("/timeline")
-async def timeline(request: Request):
+def timeline(request: Request):
     return templates.TemplateResponse("timeline.html", {"request": request})
 
 @app.get("/projects")
-async def projects(request: Request):
+def projects(request: Request):
     return templates.TemplateResponse("projects.html", {"request": request})
 
 @app.get("/resume")
-async def resume():
+def resume():
     return FileResponse("static/assets/Resume.pdf")
 
 @app.get("/ideagen")
-async def ideagen(request: Request):
+def ideagen(request: Request):
     return templates.TemplateResponse("ideagen.html", {"request": request})
 
 @app.post("/generate_ideas")
-async def generate_ideas_route(idea_request: IdeaRequest, background_tasks: BackgroundTasks):
+def generate_ideas_route(idea_request: IdeaRequest):
     try:
         reserved_ideas = get_reserved_ideas()
         reserved_ideas_prompt = "\n".join([f"- {idea['title']}: {idea['description']}" for idea in reserved_ideas])
 
         exclude_ideas = idea_request.exclude_ideas if hasattr(idea_request, 'exclude_ideas') else []
         exclude_ideas_prompt = "\n".join([f"- {title}" for title in exclude_ideas])
+
 
         prompt = f"""
             As an innovative tech project idea generator for university students, create 3 unique and novel project ideas based on the following parameters:
@@ -274,21 +293,19 @@ async def generate_ideas_route(idea_request: IdeaRequest, background_tasks: Back
             ...
             ]
             Ensure that each idea is distinct, innovative, and tailored to the specified parameters.
-            Note: The output should be a JSON object that details the analysis and recommendations without including the term 'json' or any programming syntax markers.
             """
 
-        # Run the process_and_store_ideas function asynchronously    
-        background_tasks.add_task(process_and_store_ideas, prompt, idea_request)
-        
-        return {"message": "Ideas generation started. Please check back in a few moments."}
-    except Exception as e:
-        print(f"Error in generate_ideas_route: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+        ideas_text = generate_ideas(prompt)
+        print("Raw AI response:", ideas_text)  # Debug print
 
+        # Try to extract JSON from the response
+        json_start = ideas_text.find('[')
+        json_end = ideas_text.rfind(']') + 1
+        if json_start != -1 and json_end != -1:
+            ideas_json = ideas_text[json_start:json_end]
+        else:
+            raise ValueError("No JSON found in the response")
 
-async def process_and_store_ideas(prompt, idea_request):
-    try:
-        ideas_json = await generate_ideas_async(prompt)
         ideas = json.loads(ideas_json)
 
         for idea in ideas:
@@ -301,19 +318,15 @@ async def process_and_store_ideas(prompt, idea_request):
                 "project_goals": idea_request.project_goals
             })
             idea['id'] = idea_id
-            print(idea)
 
-        app.state.latest_ideas = ideas
+        return JSONResponse(content=ideas)
+    except json.JSONDecodeError as e:
+        print(f"JSON Decode Error: {str(e)}")
+        print(f"Problematic JSON: {ideas_json}")
+        raise HTTPException(status_code=500, detail=f"Failed to parse AI response: {str(e)}")
     except Exception as e:
-        print(f"Error in process_and_store_ideas: {e}")
-        app.state.latest_ideas = None
-
-@app.get("/get_latest_ideas")
-async def get_latest_ideas():
-    if hasattr(app.state, 'latest_ideas'):
-        return app.state.latest_ideas
-    else:
-        return {"message": "No ideas generated yet"}
+        print(f"Error in generate_ideas_route: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 @app.post("/reserve_idea")
 def reserve_idea_route(reserve_request: ReserveIdeaRequest):
