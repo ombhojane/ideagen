@@ -30,12 +30,6 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_ENDPOINT"] = "https://api.smith.langchain.com"
-os.environ["LANGCHAIN_API_KEY"] = "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"
-os.environ["LANGCHAIN_PROJECT"] = "ideagen"
-
-
 # Configure static files and templates
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
